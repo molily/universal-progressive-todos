@@ -10,6 +10,13 @@ import routes from './routes';
 import createElementWithData from './createElementWithData';
 import loadData from './loadData';
 
+const partial = (f, ...args1) => {
+  return (...args2) => {
+    const finalArgs = [ ...args1, ...args2 ];
+    return f(...finalArgs);
+  };
+};
+
 const app = express();
 
 app.set('query parser', 'simple');
@@ -24,8 +31,14 @@ app.use(express.static('dist'));
 const db = new Database('./db-todos');
 initDatabase(db);
 
-const renderError = (res, err) => {
-  res.status(500).send(err.message);
+const handleError = (res, callback) => {
+  return (err, ...payload) => {
+    if (err) {
+      res.status(500).send(err.message);
+    } else {
+      return callback(...payload);
+    }
+  };
 };
 
 const bodyToTodo = (body) => {
@@ -36,95 +49,87 @@ const bodyToTodo = (body) => {
   };
 };
 
-app.get('/', (req, res) => {
-  res.redirect('/todos');
-});
-
-const postCallback = (res) => {
-  return (err) => {
-    if (err) {
-      renderError(res, err);
-      return;
-    }
+const postCallback = (req, res) => {
+  return handleError(res, () => {
     if (req.query.redirect === 'false') {
       res.status(200).end();
     } else {
       res.redirect('/');
     }
-  };
+  });
 };
 
-app.post('/todos/:id', (req, res) => {
+app.post('/:id', (req, res) => {
   const method = req.body._method;
   if (method === 'put') {
     console.log('PUT', req.params.id, req.body);
-    db.put(req.params.id, bodyToTodo(req.body), postCallback(res));
+    db.put(req.params.id, bodyToTodo(req.body), postCallback(req, res));
   } else if (method === 'delete') {
     console.log('DELETE', req.params.id, req.body);
-    db.del(req.params.id, postCallback(res));
+    db.del(req.params.id, postCallback(req, res));
   } else {
     res.status(400).send('invalid request');
   }
 });
 
-app.get('/todos', (req, res, next) => {
-  if (req.accepts('application/json')) {
-    db.getAll((err, todos) => {
-      if (err) {
-        renderError(res, err);
-        return;
-      }
+app.get('/', (req, res, next) => {
+  const wantsJSON = req.accepts('html', 'json') === 'json';
+  if (wantsJSON) {
+    db.getAll(handleError(res, (todos) => {
       res.json(todos);
-    });
+    }));
   } else {
     next();
   }
 });
 
-app.post('/todos', (req) => {
+app.post('/', (req) => {
   // const id = uuid.v4();
   const id = 'new'; // TODO
   db.put(id, bodyToTodo(req.body));
 });
 
-const routeMatchHandler = (res, err, redirectLocation, props) => {
-  console.log('routeMatchHandler', err, redirectLocation, props);
-  if (err) {
-    renderError(res, err);
-    return;
-  }
+const dataLoaded = (res, props, data) => {
+  const { dataProp } = props.routes[0];
+  const newProps = {
+    ...props,
+    createElement: partial(createElementWithData, dataProp, data)
+  };
+  const component = <RouterContext {...newProps}/>;
+  const content = renderToString(component);
+  res.render('layout', { title: 'TODO', content });
+};
+
+const routeMatchHandler = (res, redirectLocation, props) => {
   if (!props) {
     res.status(404).send('Not found');
     return;
   }
   // Load data, then render static HTML
-  const { dataSource, dataProp } = props.routes[0];
-  const loadDataParams = { ...props.params, db };
-  loadData(dataSource, loadDataParams, (err, data) => {
-    if (err) {
-      renderError(res, err);
-      return;
-    }
-    console.log('data loaded', data);
-    props.createElement = createElementWithData.bind(null, dataProp, data);
-    const component = <RouterContext {...props}/>;
-    const content = renderToString(component);
-    res.render('layout', { title: 'TODO', content });
-  });
+  loadData(
+    props.routes[0].dataSource,
+    { db },
+    handleError(res, partial(dataLoaded, res, props))
+  );
 };
 
 app.get('*', (req, res) => {
   // Server-side route matching with react-router
   // https://github.com/rackt/react-router/blob/master/docs/guides/advanced/ServerRendering.md
-  match({ routes, location: req.url }, routeMatchHandler.bind(null, res));
+  match(
+    { routes, location: req.url },
+    handleError(res, partial(routeMatchHandler, res))
+  );
 });
 
+const networkInterface = '0.0.0.0';
 const port = 3333;
 
-app.listen(port, '0.0.0.0', (err) => {
+app.listen(port, networkInterface, (err) => {
   if (err) {
     console.error(err);
     return;
   }
-  console.log(`Server running at http://localhost:${port}`);
+  process.stdout.write('\u001B[2J\u001B[0f');
+  console.log(`Server running at http://${networkInterface}:${port}`);
 });

@@ -26,6 +26,5 @@ const client = {
 const adapter = typeof window !== 'undefined' ? client : server;
 
 export default (dataSource, params, callback) => {
-  console.log('loadData', dataSource, params, callback);
   adapter[dataSource](params, callback);
 };
