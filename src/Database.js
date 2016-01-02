@@ -11,21 +11,19 @@ export default class Database {
   getAll(callback) {
     const records = [];
     this.db.createReadStream()
-    .on('data', (data) => {
-      records.push({ ...data.value, id: data.key });
-    })
-    .on('error', (err) => {
-      callback(err);
-    })
-    .on('end', () => {
-      callback(null, records);
-    });
+      .on('data', (data) => {
+        records.push({ ...data.value, id: data.key });
+      })
+      .on('error', (err) => {
+        callback(err);
+      })
+      .on('end', () => {
+        callback(null, records);
+      });
   }
 
   get(key, callback) {
-    this.db.get(key, (err, value) => {
-      callback(err);
-    });
+    this.db.get(key, callback);
   }
 
   put(key, value, callback) {

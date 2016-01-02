@@ -3,18 +3,18 @@
   "version": "0.0.1",
   "private": true,
   "description": "A todo list app with progressive enhancement",
+  "author": "Mathias Schäfer <zapperlott@9elements.com>",
+  "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build:webpack:production": "./node_modules/.bin/webpack --config webpack.config.production.js",
-    "build:webpack:development": "./node_modules/.bin/webpack --config webpack.config.development.js",
-    "watch:webpack": "./node_modules/.bin/webpack --watch --config webpack.config.development.js",
+    "build:webpack:production": "cross-env NODE_ENV=production webpack --config webpack.config.production.js",
+    "build:webpack:development": "cross-env NODE_ENV=development webpack --config webpack.config.development.js",
+    "watch:webpack": "webpack --watch --config webpack.config.development.js",
     "build:production": "npm run clean && npm run build:webpack:production",
     "build:development": "npm run clean && npm run build:webpack:development",
-    "start": "node_modules/.bin/nodemon --exec node_modules/.bin/babel-node -- src/server.js"
+    "start": "nodemon --exec babel-node -- src/server.js"
   },
-  "author": "Mathias Schäfer <zapperlott@9elements.com>",
   "devDependencies": {
-    "axios": "^0.8.1",
     "babel-cli": "^6.3.17",
     "babel-core": "^6.3.26",
     "babel-eslint": "^4.1.6",
@@ -23,8 +23,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-2": "^6.3.13",
     "body-parser": "^1.14.2",
-    "classnames": "^2.1.5",
-    "core-js": "^2.0.0",
+    "cross-env": "^1.0.6",
     "css-loader": "^0.23.1",
     "ejs": "^2.3.4",
     "eslint": "^1.10.3",
@@ -38,14 +37,11 @@
     "lodash": "^3.10.1",
     "nodemon": "^1.8.1",
     "react": "^0.14.3",
-    "react-addons-pure-render-mixin": "^0.14.3",
-    "react-addons-test-utils": "^0.14.3",
-    "react-addons-update": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-router": "^2.0.0-rc4",
     "rimraf": "^2.5.0",
-    "rsvp": "^3.1.0",
     "style-loader": "^0.13.0",
+    "uuid": "^2.0.1",
     "webpack": "^1.12.9"
   }
 }

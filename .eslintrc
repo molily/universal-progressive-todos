@@ -7,8 +7,9 @@
   "extends": "airbnb",
 
   "env": {
-    "browser": false,
-    "node": false
+    // Does not work yet, will be fixed in Eslint 2:
+    // https://github.com/eslint/eslint/issues/3915
+    "browser": false
   },
 
   "globals": {

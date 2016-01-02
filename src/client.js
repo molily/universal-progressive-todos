@@ -1,18 +1,25 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { Router, browserHistory } from 'react-router';
+import AsyncProps from 'async-props';
 import routes from './routes';
-import createElementWithData from './createElementWithData';
 import './main.css';
 
 const initClient = () => {
+  const renderLoading = () =>
+    <div>Loading…</div>;
+  const routerRender = (props) => {
+    console.log('routerRender', props);
+    return <AsyncProps {...props} renderLoading={renderLoading}/>;
+  };
   const routerProps = {
+    routes,
     history: browserHistory,
-    routes
+    render: routerRender
   };
   const component = <Router {...routerProps}/>;
   const target = document.getElementById('content');
-  ReactDOM.render(component, target);
+  render(component, target);
 };
 
 initClient();

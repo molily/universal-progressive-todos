@@ -1,8 +1,8 @@
-import AllTodos from './AllTodos';
-import ActiveTodos from './ActiveTodos';
-import CompletedTodos from './CompletedTodos';
-import NewTodo from './NewTodo';
-import EditTodo from './EditTodo';
+import AllTodos from './components/AllTodos';
+import ActiveTodos from './components/ActiveTodos';
+import CompletedTodos from './components/CompletedTodos';
+import NewTodo from './components/NewTodo';
+import EditTodo from './components/EditTodo';
 
 export default [
   {

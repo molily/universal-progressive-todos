@@ -1,32 +1,45 @@
-require('../src/util/promisePolyfill')();
 var path = require('path');
 var webpack = require('webpack');
-var webpackResolve = require('./webpackResolve');
-var webpackLoaders = require('./webpackLoaders');
 
 module.exports = {
   devtool: 'source-map',
-  entry: [
-    './src/index'
-  ],
+  entry: './src/client.js',
   output: {
-    path: path.resolve('./dist/static/'),
-    filename: 'bundle.js',
-    publicPath: '/static/',
+    path: './dist/static/',
+    filename: 'client.js'
+  },
+  module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      }
+    ],
+    loaders: [
+      {
+        test: /\.js$/,
+        loader: 'babel',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.css$/,
+        loaders: [
+          'style',
+          'css'
+        ]
+      }
+    ]
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false,
-      }
-    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     }),
-  ],
-  resolve: webpackResolve(),
-  module: {
-    loaders: webpackLoaders({ readableClassNames: false })
-  },
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {
+        warnings: false
+      }
+    })
+  ]
 };

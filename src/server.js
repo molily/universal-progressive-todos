@@ -1,14 +1,14 @@
 import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
+import uuid from 'uuid';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
+import AsyncProps, { loadPropsOnServer } from 'async-props';
 import Database from './database';
-import initDatabase from './initDatabase';
+import initDatabase from './components/initDatabase';
 import routes from './routes';
-import createElementWithData from './createElementWithData';
-import loadData from './loadData';
 
 const partial = (f, ...args1) => {
   return (...args2) => {
@@ -29,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('dist'));
 
 const db = new Database('./db-todos');
+global.db = db;
 initDatabase(db);
 
 const handleError = (res, callback) => {
@@ -59,14 +60,14 @@ const postCallback = (req, res) => {
   });
 };
 
-app.post('/:id', (req, res) => {
+app.post('/todos/:id', (req, res) => {
   const method = req.body._method;
   if (method === 'put') {
     console.log('PUT', req.params.id, req.body);
     db.put(req.params.id, bodyToTodo(req.body), postCallback(req, res));
   } else if (method === 'delete') {
     console.log('DELETE', req.params.id, req.body);
-    db.del(req.params.id, postCallback(req, res));
+    db.delete(req.params.id, postCallback(req, res));
   } else {
     res.status(400).send('invalid request');
   }
@@ -84,33 +85,20 @@ app.get('/', (req, res, next) => {
 });
 
 app.post('/', (req) => {
-  // const id = uuid.v4();
-  const id = 'new'; // TODO
+  const id = uuid.v4();
   db.put(id, bodyToTodo(req.body));
 });
 
-const dataLoaded = (res, props, data) => {
-  const { dataProp } = props.routes[0];
-  const newProps = {
-    ...props,
-    createElement: partial(createElementWithData, dataProp, data)
-  };
-  const component = <RouterContext {...newProps}/>;
-  const content = renderToString(component);
-  res.render('layout', { title: 'TODO', content });
-};
-
-const routeMatchHandler = (res, redirectLocation, props) => {
-  if (!props) {
-    res.status(404).send('Not found');
-    return;
-  }
-  // Load data, then render static HTML
-  loadData(
-    props.routes[0].dataSource,
-    { db },
-    handleError(res, partial(dataLoaded, res, props))
-  );
+const routeMatchHandler = (res, redirectLocation, renderProps) => {
+  loadPropsOnServer(renderProps, (err, asyncProps, scriptTag) => {
+    const element = <AsyncProps {...renderProps} {...asyncProps} />;
+    const content = renderToString(element);
+    res.render('layout', {
+      title: 'Todo list',
+      content,
+      asyncProps: scriptTag
+    });
+  })
 };
 
 app.get('*', (req, res) => {
