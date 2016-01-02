@@ -1,6 +1,6 @@
 {
   "name": "todo-list",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "description": "A todo list app with progressive enhancement",
   "author": "Mathias Schäfer <zapperlott@9elements.com>",
