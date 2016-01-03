@@ -1,30 +1,35 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import todosPropType from './todosPropType';
 import TodoList from './TodoList';
-import { isServer } from './../universal';
+import * as todosActions from '../actions/todosActions';
 
-export default class AllTodos extends Component {
+class AllTodos extends Component {
 
   render() {
     console.log('AllTodos#render');
-    const { todos } = this.props;
+    const { todos, completeTodo, deleteTodo } = this.props;
     console.dir(todos, { color: true, depth: 0 });
-    return <TodoList todos={todos}/>;
+    return <TodoList todos={todos}
+      completeTodo={completeTodo} deleteTodo={deleteTodo}/>;
   }
 
 }
 
-AllTodos.loadProps = (params, callback) => {
-  console.log('AllTodos.loadProps', params);
-  if (isServer) {
-    global.db.getAll((err, todos) => {
-      callback(err, { todos });
-    });
-  } else {
-    console.trace();
-  }
-};
+AllTodos.needs = [
+  todosActions.getTodos
+];
 
 AllTodos.propTypes = {
-  todos: todosPropType
+  todos: todosPropType,
+  completeTodo: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired
 };
+
+export default connect(
+  (state) => state,
+  {
+    completeTodo: todosActions.completeTodo,
+    deleteTodo: todosActions.deleteTodo
+  }
+)(AllTodos);

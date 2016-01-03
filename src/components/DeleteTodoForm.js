@@ -3,10 +3,9 @@ import todoPropType from './todoPropType';
 
 export default class DeleteTodoForm extends Component {
 
-  onSubmit() {
-    if (this.props.onSubmit) {
-      this.props.onSubmit();
-    }
+  onSubmit(event) {
+    event.preventDefault();
+    this.props.deleteTodo(this.props.todo);
   }
 
   render() {
@@ -14,7 +13,8 @@ export default class DeleteTodoForm extends Component {
     const action = `/todos/${todo.id}`;
     return <form action={action} method='post'
       onSubmit={this.onSubmit.bind(this)} className='deleteTodoForm'>
-      <input type='hidden' name='_method' value='delete'/>
+      <input type='hidden' name='_method' value='DELETE'/>
+      <input type='hidden' name='id' value={todo.id}/>
       <button type='submit' className='deleteTodoButton'>
         Delete
       </button>
@@ -25,5 +25,5 @@ export default class DeleteTodoForm extends Component {
 
 DeleteTodoForm.propTypes = {
   todo: todoPropType,
-  onSubmit: PropTypes.func
+  deleteTodo: PropTypes.func.isRequired
 };

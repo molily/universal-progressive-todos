@@ -4,18 +4,16 @@ import bodyParser from 'body-parser';
 import uuid from 'uuid';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import createLocation from 'history/lib/createLocation';
 import { match, RouterContext } from 'react-router';
-import AsyncProps, { loadPropsOnServer } from 'async-props';
+import { Provider } from 'react-redux';
+
+import partial from './partial';
 import Database from './database';
 import initDatabase from './components/initDatabase';
 import routes from './routes';
-
-const partial = (f, ...args1) => {
-  return (...args2) => {
-    const finalArgs = [ ...args1, ...args2 ];
-    return f(...finalArgs);
-  };
-};
+import createStore from './createStore';
+import fetchComponentData from './fetchComponentData';
 
 const app = express();
 
@@ -32,10 +30,17 @@ const db = new Database('./db-todos');
 global.db = db;
 initDatabase(db);
 
+const wantsJSON = (req) =>
+  req.accepts('html', 'json') === 'json';
+
+const renderError = (res, err) => {
+  res.status(500).send(err.message);
+};
+
 const handleError = (res, callback) => {
   return (err, ...payload) => {
     if (err) {
-      res.status(500).send(err.message);
+      renderError(res, err);
     } else {
       return callback(...payload);
     }
@@ -52,7 +57,7 @@ const bodyToTodo = (body) => {
 
 const postCallback = (req, res) => {
   return handleError(res, () => {
-    if (req.query.redirect === 'false') {
+    if (wantsJSON(req)) {
       res.status(200).end();
     } else {
       res.redirect('/');
@@ -62,20 +67,20 @@ const postCallback = (req, res) => {
 
 app.post('/todos/:id', (req, res) => {
   const method = req.body._method;
-  if (method === 'put') {
-    console.log('PUT', req.params.id, req.body);
+  console.log('POST /todos/' + req.params.id, req.body);
+  if (method === 'PUT') {
+    // TODO: Move this to the actions. Create store, dispatch action
     db.put(req.params.id, bodyToTodo(req.body), postCallback(req, res));
-  } else if (method === 'delete') {
-    console.log('DELETE', req.params.id, req.body);
+  } else if (method === 'DELETE') {
+    // TODO: Move this to the actions. Create store, dispatch action
     db.delete(req.params.id, postCallback(req, res));
   } else {
-    res.status(400).send('invalid request');
+    res.status(400).send('Invalid request');
   }
 });
 
 app.get('/', (req, res, next) => {
-  const wantsJSON = req.accepts('html', 'json') === 'json';
-  if (wantsJSON) {
+  if (wantsJSON(req)) {
     db.getAll(handleError(res, (todos) => {
       res.json(todos);
     }));
@@ -89,16 +94,34 @@ app.post('/', (req) => {
   db.put(id, bodyToTodo(req.body));
 });
 
-const routeMatchHandler = (res, redirectLocation, renderProps) => {
-  loadPropsOnServer(renderProps, (err, asyncProps, scriptTag) => {
-    const element = <AsyncProps {...renderProps} {...asyncProps} />;
-    const content = renderToString(element);
-    res.render('layout', {
-      title: 'Todo list',
-      content,
-      asyncProps: scriptTag
+const renderContent = (store, props) => {
+  console.log('renderHTML');
+  const element = <Provider store={store}>
+    <RouterContext {...props}/>
+  </Provider>;
+  return renderToString(element);
+};
+
+const routeMatchHandler = (res, redirectLocation, props) => {
+  const store = createStore();
+  // Inject reference to Database instance
+  const params = { ...props.params, db };
+  fetchComponentData(store.dispatch, props.components, params)
+    .then((...args) => {
+      console.log('fetchComponentData resolved', args);
+      return renderContent(store, props);
+    })
+    .then((content) => {
+      const initialState = store.getState();
+      res.render('layout', {
+        title: 'Todo list',
+        content,
+        initialState: JSON.stringify(initialState, null, 2)
+      });
+    })
+    .catch((reason) => {
+      renderError(res, reason)
     });
-  })
 };
 
 app.get('*', (req, res) => {

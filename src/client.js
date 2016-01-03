@@ -1,24 +1,23 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory } from 'react-router';
-import AsyncProps from 'async-props';
+import { Provider } from 'react-redux';
+import createStore from './createStore';
 import routes from './routes';
 import './main.css';
 
+const $ = (id) =>
+  window.document.getElementById(id);
+
 const initClient = () => {
-  const renderLoading = () =>
-    <div>Loading…</div>;
-  const routerRender = (props) => {
-    console.log('routerRender', props);
-    return <AsyncProps {...props} renderLoading={renderLoading}/>;
-  };
-  const routerProps = {
-    routes,
-    history: browserHistory,
-    render: routerRender
-  };
-  const component = <Router {...routerProps}/>;
-  const target = document.getElementById('content');
+  const initialState = JSON.parse(
+    $('initialState').textContent
+  );
+  const store = createStore(initialState);
+  const component = <Provider store={store}>
+    <Router routes={routes} history={browserHistory}/>
+  </Provider>;
+  const target = $('content');
   render(component, target);
 };
 
