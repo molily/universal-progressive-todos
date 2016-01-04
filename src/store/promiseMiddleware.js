@@ -1,7 +1,6 @@
-// Based on work by Milo Mordaunt
-// Changed to emit Flux Standard Actions
 // Copyright (c) 2015 Milo Mordaunt, MIT-licensed
-// https://github.com/bananaoomarang/isomorphic-redux/blob/master/shared/lib/promiseMiddleware.js
+// Source: https://github.com/bananaoomarang/isomorphic-redux/blob/master/shared/lib/promiseMiddleware.js // eslint-disable-line
+// Changed to emit Flux Standard Actions
 
 const isPromise = (obj) => obj && typeof obj.then === 'function';
 
@@ -26,7 +25,9 @@ export default () => {
       })
       .catch((error) => {
         next({ type: FAILURE, error: true, payload: error });
+        /* eslint-disable no-console */
         console.log(error);
+        /* eslint-enable no-console */
         return false;
       });
   };

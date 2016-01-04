@@ -2,10 +2,38 @@ html {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.todo-completed {
+input, button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.todos {
+  padding: 0;
+  list-style: none;
+}
+
+.todo {
+  border-bottom: 1px solid #eee;
+  padding: 20px 10px;
+}
+
+.todo--completed {
   color: gray;
 }
 
-.todo-active {
+.todo--active {
   color: blue;
+}
+
+.todo__completeForm {
+  float: left;
+  width: 120px;
+}
+
+.todo__deleteForm {
+  float: right;
+}
+
+.createTodoForm__label, .createTodoForm__input {
+  margin-right: 10px;
 }

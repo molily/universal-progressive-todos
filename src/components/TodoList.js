@@ -3,20 +3,28 @@ import classNames from 'classnames';
 import todosPropType from './todosPropType';
 import CompleteTodoForm from './CompleteTodoForm';
 import DeleteTodoForm from './DeleteTodoForm';
+import compareTodos from '../utils/compareTodos';
 
 export default class TodoList extends Component {
 
   render() {
-    const { todos, completeTodo, deleteTodo } = this.props;
-    const items = todos.map((todo, index) => {
+    const { updateTodo, deleteTodo } = this.props;
+    const todos = this.props.todos.slice().sort(compareTodos);
+    const items = todos.map((todo) => {
       const className = classNames(
         'todo',
-        todo.completed ? 'todo-completed' : 'todo-active'
+        todo.completed ? 'todo--completed' : 'todo--active'
       );
-      return <li key={index} className={className}>
-        <CompleteTodoForm todo={todo} completeTodo={completeTodo}/>
-        <span className='todoText'>{todo.text}</span>
-        <DeleteTodoForm todo={todo} deleteTodo={deleteTodo}/>
+      return <li key={todo.id} className={className}>
+        <div className='todo__completeForm'>
+          <CompleteTodoForm todo={todo} updateTodo={updateTodo}/>
+        </div>
+        <span className='todo__text'>
+          {todo.text}
+        </span>
+        <div className='todo__deleteForm'>
+          <DeleteTodoForm todo={todo} deleteTodo={deleteTodo}/>
+        </div>
       </li>;
     });
     return <ul className='todos'>{items}</ul>;
@@ -26,6 +34,6 @@ export default class TodoList extends Component {
 
 TodoList.propTypes = {
   todos: todosPropType,
-  completeTodo: PropTypes.func.isRequired,
+  updateTodo: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired
 };

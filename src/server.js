@@ -1,19 +1,18 @@
-import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 import uuid from 'uuid';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import createLocation from 'history/lib/createLocation';
 import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
-
-import partial from './partial';
-import Database from './database';
-import initDatabase from './components/initDatabase';
+import partial from './utils/partial';
+import url from './utils/url';
+import Database from './data/Database';
+import seedDatabase from './data/seedDatabase';
 import routes from './routes';
-import createStore from './createStore';
-import fetchComponentData from './fetchComponentData';
+import createStore from './store/createStore';
+import fetchComponentData from './data/fetchComponentData';
+import * as todosActions from './actions/todosActions';
 
 const app = express();
 
@@ -27,24 +26,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('dist'));
 
 const db = new Database('./db-todos');
-global.db = db;
-initDatabase(db);
+seedDatabase(db);
 
 const wantsJSON = (req) =>
   req.accepts('html', 'json') === 'json';
 
-const renderError = (res, err) => {
-  res.status(500).send(err.message);
-};
-
-const handleError = (res, callback) => {
-  return (err, ...payload) => {
-    if (err) {
-      renderError(res, err);
-    } else {
-      return callback(...payload);
-    }
-  };
+const renderServerError = (res, error) => {
+  res.status(500).send(error.message);
 };
 
 const bodyToTodo = (body) => {
@@ -55,73 +43,108 @@ const bodyToTodo = (body) => {
   };
 };
 
-const postCallback = (req, res) => {
-  return handleError(res, () => {
-    if (wantsJSON(req)) {
-      res.status(200).end();
-    } else {
-      res.redirect('/');
-    }
-  });
+const onRejectedRenderError = (res) => {
+  return (reason) => {
+    renderServerError(res, reason);
+  };
 };
 
-app.post('/todos/:id', (req, res) => {
+const handlePostAction = (req, res, action) => {
+  action.payload.then(
+    () => {
+      if (wantsJSON(req)) {
+        res.status(200).end();
+      } else {
+        res.redirect(url.todosPath);
+      }
+    },
+    onRejectedRenderError(res)
+  );
+};
+
+// Update or delete a to-do
+app.post(url.todoPathPattern, (req, res) => {
   const method = req.body._method;
-  console.log('POST /todos/' + req.params.id, req.body);
   if (method === 'PUT') {
-    // TODO: Move this to the actions. Create store, dispatch action
-    db.put(req.params.id, bodyToTodo(req.body), postCallback(req, res));
+    // Update
+    const todo = bodyToTodo(req.body);
+    handlePostAction(req, res, todosActions.createTodo(todo, db));
   } else if (method === 'DELETE') {
-    // TODO: Move this to the actions. Create store, dispatch action
-    db.delete(req.params.id, postCallback(req, res));
+    // Delete
+    const todo = { id: req.params.id };
+    handlePostAction(req, res, todosActions.deleteTodo(todo, db));
   } else {
     res.status(400).send('Invalid request');
   }
 });
 
-app.get('/', (req, res, next) => {
+// Get all todos
+/*
+app.get(url.todosPath, (req, res, next) => {
   if (wantsJSON(req)) {
-    db.getAll(handleError(res, (todos) => {
-      res.json(todos);
-    }));
+    todosActions.getTodos(params, db).payload.then(
+      (todos) => {
+        res.json(todos);
+      },
+      onRejectedRenderError(res)
+    );
   } else {
     next();
   }
 });
+*/
 
-app.post('/', (req) => {
+// Create a new to-do
+app.post(url.todosPath, (req, res) => {
+  const todo = bodyToTodo(req.body);
   const id = uuid.v4();
-  db.put(id, bodyToTodo(req.body));
+  // Add id
+  todo.id = id;
+  todosActions.createTodo(todo, db).payload.then(
+    () => {
+      if (wantsJSON(req)) {
+        res.status(201).location(url.todoPath(todo)).end();
+      } else {
+        res.redirect(url.todosPath);
+      }
+    },
+    onRejectedRenderError(res)
+  );
 });
 
 const renderContent = (store, props) => {
-  console.log('renderHTML');
   const element = <Provider store={store}>
     <RouterContext {...props}/>
   </Provider>;
   return renderToString(element);
 };
 
-const routeMatchHandler = (res, redirectLocation, props) => {
+const routeMatchHandler = (res, error, redirectLocation, props) => {
+  if (error) {
+    renderServerError(res, error);
+    return;
+  }
+  if (!props) {
+    res.status(404).send('Not Found');
+    return;
+  }
   const store = createStore();
-  // Inject reference to Database instance
-  const params = { ...props.params, db };
-  fetchComponentData(store.dispatch, props.components, params)
-    .then((...args) => {
-      console.log('fetchComponentData resolved', args);
-      return renderContent(store, props);
-    })
-    .then((content) => {
+  fetchComponentData(
+    store.dispatch, props.components, props.params, db
+  ).then(
+    () => {
+      const content = renderContent(store, props);
       const initialState = store.getState();
       res.render('layout', {
         title: 'Todo list',
         content,
         initialState: JSON.stringify(initialState, null, 2)
       });
-    })
-    .catch((reason) => {
-      renderError(res, reason)
-    });
+    },
+    (reason) => {
+      renderServerError(res, reason);
+    }
+  );
 };
 
 app.get('*', (req, res) => {
@@ -129,16 +152,16 @@ app.get('*', (req, res) => {
   // https://github.com/rackt/react-router/blob/master/docs/guides/advanced/ServerRendering.md
   match(
     { routes, location: req.url },
-    handleError(res, partial(routeMatchHandler, res))
+    partial(routeMatchHandler, res)
   );
 });
 
 const networkInterface = '0.0.0.0';
 const port = 3333;
 
-app.listen(port, networkInterface, (err) => {
-  if (err) {
-    console.error(err);
+app.listen(port, networkInterface, (error) => {
+  if (error) {
+    console.error(error);
     return;
   }
   process.stdout.write('\u001B[2J\u001B[0f');

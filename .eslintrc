@@ -60,7 +60,7 @@
 
     // Limit Maximum Length of Line
     // http://eslint.org/docs/rules/max-len.html
-    "max-len": [1, 80, 2],
+    "max-len": [1, 80, 2, { "ignoreUrls": true }],
     // Disallow or enforce spaces inside of brackets
     // [ 1 ], not [1]
     // http://eslint.org/docs/rules/array-bracket-spacing

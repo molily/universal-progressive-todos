@@ -1,38 +1,28 @@
 import AllTodos from './components/AllTodos';
 import ActiveTodos from './components/ActiveTodos';
 import CompletedTodos from './components/CompletedTodos';
-import NewTodo from './components/NewTodo';
-import EditTodo from './components/EditTodo';
+import CreateTodoForm from './components/CreateTodoForm';
+import EditTodoForm from './components/EditTodoForm';
 
 export default [
   {
     path: '/',
-    component: AllTodos,
-    dataSource: 'allTodos',
-    dataProp: 'todos'
+    component: AllTodos
   },
   {
     path: '/active',
-    component: ActiveTodos,
-    dataSource: 'activeTodos',
-    dataProp: 'todos'
+    component: ActiveTodos
   },
   {
     path: '/completed',
-    component: CompletedTodos,
-    dataSource: 'completedTodos',
-    dataProp: 'todos'
+    component: CompletedTodos
   },
   {
     path: '/new',
-    component: NewTodo,
-    dataSource: 'newTodo',
-    dataProp: 'todo'
+    component: CreateTodoForm
   },
   {
     path: '/edit/:id',
-    component: EditTodo,
-    dataSource: 'todo',
-    dataProp: 'todo'
+    component: EditTodoForm
   }
 ];

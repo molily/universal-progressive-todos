@@ -1,4 +1,4 @@
-import actionTypes from '../constants/actionTypes';
+import actionTypes from '../actions/actionTypes';
 import createReducer from './createReducer';
 
 const initialState = [];
@@ -9,15 +9,16 @@ const actionMap = {
     return action.payload;
   },
 
-  [actionTypes.COMPLETE_TODO](state, action) {
+  [actionTypes.CREATE_TODO](state, action) {
+    return state.concat(action.payload);
+  },
+
+  [actionTypes.UPDATE_TODO](state, action) {
     const todo = action.payload;
-    const { id } = todo;
-    const completedTodo = { ...todo, completed: true };
     return state.reduce((result, otherTodo) => {
-      const newTodo = otherTodo.id === id ?
-        completedTodo :
-        otherTodo;
-      result.push(newTodo);
+      result.push(
+        otherTodo.id === todo.id ? todo : otherTodo
+      );
       return result;
     }, []);
   },

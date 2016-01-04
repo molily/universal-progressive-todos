@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import todoPropType from './todoPropType';
 
-export default class EditTodo extends Component {
+export default class EditTodoForm extends Component {
 
   render() {
-    return <div/>;
+    return <div>TODO</div>;
   }
 
 }
 
-EditTodo.propTypes = {
+EditTodoForm.propTypes = {
   todo: todoPropType
 };
