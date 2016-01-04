@@ -14,6 +14,24 @@ These [action creators](https://github.com/molily/universal-progressive-todos/bl
 
 I think the key is to have the data loading logic in one place, or have a high-level wrapper like [Relay](https://facebook.github.io/relay/), [Transmit](https://github.com/RickWong/react-transmit) or [Falcor](http://www.mattgreer.org/articles/server-side-react-and-falcor/) for managing data dependencies.
 
-Similar projects:
+## Starting the server
+
+```
+$ npm install
+$ npm start
+```
+
+In another terminal, run:
+
+```
+$ npm run watch:webpack
+```
+
+Then open [http://localhost:3333](http://localhost:3333) in your browser.
+
+(I’ll integrate webpack into the dev server soon! I’m still experimenting with a decent development setup.)
+
+## Similar projects
 
 - [react-redux-universal-hot-example](https://github.com/erikras/react-redux-universal-hot-example) by Erik Rasmussen: More complete but way more complex example, also no emphasis on Progressive Enhancement
+
