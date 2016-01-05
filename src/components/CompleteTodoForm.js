@@ -4,6 +4,11 @@ import url from '../utils/url';
 
 export default class CompleteTodoForm extends Component {
 
+  constructor() {
+    super();
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
   onSubmit(event) {
     event.preventDefault();
     const { todo } = this.props;
@@ -14,7 +19,7 @@ export default class CompleteTodoForm extends Component {
   render() {
     const { todo } = this.props;
     return <form action={url.todoPath(todo)} method='post'
-      onSubmit={this.onSubmit.bind(this)} className='completeTodoForm'>
+      onSubmit={this.onSubmit} className='completeTodoForm'>
       <input type='hidden' name='_method' value='PUT'/>
       <input type='hidden' name='id' value={todo.id}/>
       <input type='hidden' name='text' value={todo.text}/>

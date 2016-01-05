@@ -13,6 +13,7 @@ import routes from './routes';
 import createStore from './store/createStore';
 import fetchComponentData from './data/fetchComponentData';
 import * as todosActions from './actions/todosActions';
+import webpackDevServer from '../webpack/devServer';
 
 const app = express();
 
@@ -24,6 +25,11 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static('dist'));
+
+// Webpack development server
+if (process.env.NODE_ENV !== 'production') {
+  webpackDevServer(app);
+}
 
 const db = new Database('./db-todos');
 seedDatabase(db);

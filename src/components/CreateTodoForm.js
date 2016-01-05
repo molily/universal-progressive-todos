@@ -3,6 +3,11 @@ import url from '../utils/url';
 
 export default class CreateTodoForm extends Component {
 
+  constructor() {
+    super();
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
   onSubmit(event) {
     event.preventDefault();
     this.props.createTodo({
@@ -15,7 +20,7 @@ export default class CreateTodoForm extends Component {
 
   render() {
     return <form ref='form' action={url.todosPath} method='post'
-      onSubmit={this.onSubmit.bind(this)} className='createTodoForm'>
+      onSubmit={this.onSubmit} className='createTodoForm'>
       <label>
         <span className='createTodoForm__label'>Create a new todo:</span>
         <input ref='text' type='text' name='text'

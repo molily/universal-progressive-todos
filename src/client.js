@@ -4,7 +4,6 @@ import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import createStore from './store/createStore';
 import routes from './routes';
-import './main.css';
 
 const $ = (id) =>
   window.document.getElementById(id);
