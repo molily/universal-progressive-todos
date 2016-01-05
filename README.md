@@ -21,15 +21,7 @@ $ npm install
 $ npm start
 ```
 
-In another terminal, run:
-
-```
-$ npm run watch:webpack
-```
-
 Then open [http://localhost:3333](http://localhost:3333) in your browser.
-
-(I’ll integrate webpack into the dev server soon! I’m still experimenting with a decent development setup.)
 
 ## Similar projects
 
