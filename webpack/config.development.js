@@ -49,8 +49,5 @@ export default assign({}, baseConfig, {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"development"'
     })
-  ],
-  eslint: {
-    configFile: '.eslintrc'
-  }
+  ]
 });
