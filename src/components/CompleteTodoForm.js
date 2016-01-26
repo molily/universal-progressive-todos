@@ -25,7 +25,10 @@ export default class CompleteTodoForm extends Component {
       <input type='hidden' name='text' value={todo.text}/>
       <input type='hidden' name='completed' value={!todo.completed}/>
       <button type='submit' className='completeTodoForm__submitButton'>
-        {todo.completed ? 'Activate' : 'Complete'}
+        {todo.completed ? '☐' : '✅'}
+        <span className='accessibleHidden'>
+          {todo.completed ? 'Mark undone' : 'Mark done'}
+        </span>
       </button>
     </form>;
   }

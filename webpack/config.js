@@ -1,2 +1,2 @@
 require('babel-register');
-module.exports = require('./config.' + process.env.NODE_ENV);
+module.exports = require('./' + process.env.NODE_ENV);

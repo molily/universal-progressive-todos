@@ -1,0 +1,55 @@
+@import './variables';
+@import './mixins/clearfix';
+@import './mixins/accessible-hide';
+
+html {
+  font-family: $font-family;
+  line-height: $line-height;
+  background-color: $background-color;
+  color: $color;
+}
+
+input, button {
+  border: 1px solid gray;
+  border-radius: 2px;
+  padding: $std-padding-quarter $std-padding-half;
+  background-color: #eee;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.accessibleHidden {
+  @include accessible-hide;
+}
+
+.todos {
+  padding: 0;
+  list-style: none;
+}
+
+.todo {
+  @include clearfix;
+  border-bottom: 1px solid #eee;
+  padding: 20px 10px;
+}
+
+.todo--completed {
+  color: gray;
+}
+
+.todo--active {
+  color: blue;
+}
+
+.todo__leftControls {
+  float: left;
+  width: 120px;
+}
+
+.todo__rightControls {
+  float: right;
+}
+
+.createTodoForm__label, .createTodoForm__input {
+  margin-right: 10px;
+}

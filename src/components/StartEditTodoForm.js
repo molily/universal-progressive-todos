@@ -11,17 +11,19 @@ export default class DeleteTodoForm extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    this.props.deleteTodo(this.props.todo);
+    const { todo } = this.props;
+    const newTodo = { ...todo, editMode: true };
+    this.props.updateTodo(newTodo);
   }
 
   render() {
     const { todo } = this.props;
     return <form action={url.todoPath(todo)} method='post'
-      onSubmit={this.onSubmit} className='deleteTodoForm'>
-      <input type='hidden' name='_method' value='DELETE'/>
+      onSubmit={this.onSubmit} className='startEditTodoForm'>
+      <input type='hidden' name='_method' value='PUT'/>
       <input type='hidden' name='id' value={todo.id}/>
-      <button type='submit' className='deleteTodoForm__submitButton'>
-        Delete
+      <button type='submit' className='startEditTodoForm__submitButton'>
+        Edit
       </button>
     </form>;
   }
@@ -30,5 +32,5 @@ export default class DeleteTodoForm extends Component {
 
 DeleteTodoForm.propTypes = {
   todo: todoPropType,
-  deleteTodo: PropTypes.func.isRequired
+  updateTodo: PropTypes.func.isRequired
 };

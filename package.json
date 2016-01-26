@@ -1,19 +1,20 @@
 {
-  "name": "todo-list",
+  "name": "universal-progressive-todos",
   "version": "0.1.0",
   "private": true,
   "description": "A todo list app with progressive enhancement",
   "author": "Mathias Schäfer <zapperlott@9elements.com>",
   "license": "MIT",
   "scripts": {
-    "start": "cross-env NODE_ENV=development npm run build:css && npm run server",
-    "server": "nodemon --exec babel-node -- src/server.js",
+    "start": "cross-env NODE_ENV=development npm run prepare-dist && npm run build:css && npm run server",
+    "server": "nodemon --exec babel-node --watch src --ext js src/server.js",
     "clean": "rimraf dist",
+    "prepare-dist": "npm run clean && mkdirp dist/static/",
     "build:production": "npm run clean && npm run build:css && npm run build:webpack:production",
     "build:development": "npm run clean && npm run build:css && npm run build:webpack:development",
     "build:webpack:production": "cross-env NODE_ENV=production webpack --config webpack/config.js",
     "build:webpack:development": "cross-env NODE_ENV=development webpack --config webpack/config.js",
-    "build:css": "npm run clean && mkdir dist && mkdir dist/static/ && cp src/stylesheets/* dist/static/",
+    "build:css": "node-sass --output-style expanded src/stylesheets/main.scss dist/static/main.css",
     "lint": "eslint src"
   },
   "devDependencies": {
@@ -40,6 +41,7 @@
     "leveldown": "^1.4.3",
     "levelup": "^1.3.1",
     "lodash": "^3.10.1",
+    "mkdirp": "^0.5.1",
     "nodemon": "^1.8.1",
     "object-assign": "^4.0.1",
     "react": "^0.14.3",

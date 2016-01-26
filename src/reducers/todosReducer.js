@@ -15,6 +15,7 @@ const actionMap = {
 
   [actionTypes.UPDATE_TODO](state, action) {
     const todo = action.payload;
+    // Create a new array with the replaced todo
     return state.reduce((result, otherTodo) => {
       result.push(
         otherTodo.id === todo.id ? todo : otherTodo

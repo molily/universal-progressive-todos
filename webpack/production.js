@@ -1,8 +1,8 @@
-import assign from 'object-assign';
 import webpack from 'webpack';
-import baseConfig from './config.base';
+import base from './base';
 
-export default assign({}, baseConfig, {
+export default {
+  ...base,
   devtool: 'source-map',
   module: {
     loaders: [
@@ -25,4 +25,4 @@ export default assign({}, baseConfig, {
       }
     })
   ]
-});
+};

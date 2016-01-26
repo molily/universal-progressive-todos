@@ -10,10 +10,11 @@ export default class CreateTodoForm extends Component {
 
   onSubmit(event) {
     event.preventDefault();
+    const text = this.refs.text.value;
+    if (!text) return;
     this.props.createTodo({
       // ID is created on the server
-      text: this.refs.text.value,
-      completed: false
+      text
     });
     this.refs.form.reset();
   }

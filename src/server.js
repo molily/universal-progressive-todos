@@ -68,7 +68,7 @@ const handlePostAction = (req, res, action) => {
   );
 };
 
-// Update or delete a to-do
+// POST an a individual to-do: Update or delete
 app.post(url.todoPathPattern, (req, res) => {
   const method = req.body._method;
   if (method === 'PUT') {
@@ -100,7 +100,7 @@ app.get(url.todosPath, (req, res, next) => {
 });
 */
 
-// Create a new to-do
+// POST on the todos collection: Create a new to-do
 app.post(url.todosPath, (req, res) => {
   const todo = bodyToTodo(req.body);
   const id = uuid.v4();
@@ -170,6 +170,6 @@ app.listen(port, networkInterface, (error) => {
     console.error(error);
     return;
   }
-  process.stdout.write('\u001B[2J\u001B[0f');
+  //process.stdout.write('\u001B[2J\u001B[0f');
   console.log(`Server running at http://${networkInterface}:${port}`);
 });

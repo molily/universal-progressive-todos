@@ -1,6 +1,5 @@
 import partial from '../utils/partial';
 import url from '../utils/url';
-import rethrow from '../utils/rethrow';
 
 const jsonMime = 'application/json';
 
@@ -71,13 +70,10 @@ export const deleteTodo = (todo) =>
 // with the new ID.
 export const createTodo = (todo) => {
   return httpRequest('POST', url.todosPath, todo).then(
-    (locationHeader) => {
-      return {
-        ...todo,
-        // Extract the new ID
-        id: url.todoIdFromPath(locationHeader)
-      };
-    },
-    rethrow
+    (locationHeader) => ({
+      ...todo,
+      // Extract the new ID
+      id: url.todoIdFromPath(locationHeader)
+    })
   );
 };
