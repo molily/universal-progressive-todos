@@ -10,16 +10,28 @@ html {
 }
 
 input, button {
-  border: 1px solid gray;
-  border-radius: 2px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
   padding: $std-padding-quarter $std-padding-half;
-  background-color: #eee;
   font-family: inherit;
   font-size: inherit;
 }
 
-.accessibleHidden {
+input {
+  background-color: #fafafa;
+}
+
+button {
+  background-color: #eee;
+}
+
+.accessible-hidden {
   @include accessible-hide;
+}
+
+.inline-form {
+  display: inline-block;
+  vertical-align: top;
 }
 
 .todos {
@@ -28,7 +40,7 @@ input, button {
 }
 
 .todo {
-  @include clearfix;
+  display: flex;
   border-bottom: 1px solid #eee;
   padding: 20px 10px;
 }
@@ -42,14 +54,26 @@ input, button {
 }
 
 .todo__leftControls {
-  float: left;
-  width: 120px;
+  padding-right: $std-padding;
+  order: 1;
+}
+
+.todo__body {
+  flex: 1;
+  order: 2;
+  padding-right: $std-padding;
 }
 
 .todo__rightControls {
-  float: right;
+  order: 3;
+  width: 180px;
+  text-align: center;
 }
 
-.createTodoForm__label, .createTodoForm__input {
+.CreateTodoForm__label, .CreateTodoForm__input {
+  margin-right: 10px;
+}
+
+.EditTodoForm__label {
   margin-right: 10px;
 }

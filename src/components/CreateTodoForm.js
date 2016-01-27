@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import url from '../utils/url';
+import { todosPath } from '../utils/url';
 
 export default class CreateTodoForm extends Component {
 
@@ -10,25 +10,26 @@ export default class CreateTodoForm extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    const text = this.refs.text.value;
+    const textField = this.refs.text;
+    const text = textField.value;
     if (!text) return;
     this.props.createTodo({
       // ID is created on the server
       text
     });
-    this.refs.form.reset();
+    textField.value = '';
   }
 
   render() {
-    return <form ref='form' action={url.todosPath} method='post'
-      onSubmit={this.onSubmit} className='createTodoForm'>
+    return <form action={todosPath} method='post'
+      onSubmit={this.onSubmit} className='inline-form CreateTodoForm'>
       <label>
         <span className='createTodoForm__label'>Create a new todo:</span>
         <input ref='text' type='text' name='text'
           placeholder='e.g., do the laundry'
           className='createTodoForm__input'/>
       </label>
-      <button type='submit' className='createTodoForm__submitButton'>
+      <button type='submit' className='CreateTodoForm__submitButton'>
         Create
       </button>
     </form>;

@@ -19,9 +19,9 @@ export default class TodoListItem extends Component {
       <span className='todo__text'>{todo.text}</span>;
     const accessibleLabel = todo.completed ?
       'Done:' : 'Todo:';
-    return <li key={todo.id} className={className}>
-      <span className='accessibleHidden'>{accessibleLabel}</span>
-      {body}
+    return <li key={todo.id} id={`todo-${todo.id}`} className={className}>
+      <span className='accessible-hidden'>{accessibleLabel}</span>
+      <div className='todo__body'>{body}</div>
       <div className='todo__leftControls'>
         <CompleteTodoForm todo={todo} updateTodo={updateTodo}/>
       </div>

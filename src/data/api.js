@@ -1,5 +1,5 @@
 import partial from '../utils/partial';
-import url from '../utils/url';
+import { todosPath, todoPath, todoIdFromPath } from '../utils/url';
 
 const jsonMime = 'application/json';
 
@@ -58,22 +58,22 @@ const httpRequest = (method, path, payload) => {
   });
 };
 
-export const fetchTodos = partial(httpRequest, 'GET', url.todosPath);
+export const fetchTodos = partial(httpRequest, 'GET', todosPath);
 
 export const updateTodo = (todo) =>
-  httpRequest('PUT', url.todoPath(todo), todo);
+  httpRequest('PUT', todoPath(todo), todo);
 
 export const deleteTodo = (todo) =>
-  httpRequest('DELETE', url.todoPath(todo));
+  httpRequest('DELETE', todoPath(todo));
 
 // Creates a new to-do on the server, returns a promise for the to-do
 // with the new ID.
 export const createTodo = (todo) => {
-  return httpRequest('POST', url.todosPath, todo).then(
+  return httpRequest('POST', todosPath, todo).then(
     (locationHeader) => ({
       ...todo,
       // Extract the new ID
-      id: url.todoIdFromPath(locationHeader)
+      id: todoIdFromPath(locationHeader)
     })
   );
 };

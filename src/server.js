@@ -6,7 +6,8 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 import partial from './utils/partial';
-import url from './utils/url';
+import { todosPath, todoPathPattern, todoPath, todoInListPath }
+  from './utils/url';
 import Database from './data/Database';
 import seedDatabase from './data/seedDatabase';
 import routes from './routes';
@@ -45,7 +46,8 @@ const bodyToTodo = (body) => {
   return {
     id: body.id,
     text: body.text,
-    completed: body.completed === 'true'
+    completed: body.completed === 'true',
+    editMode: body.editMode === 'true'
   };
 };
 
@@ -55,13 +57,13 @@ const onRejectedRenderError = (res) => {
   };
 };
 
-const handlePostAction = (req, res, action) => {
-  action.payload.then(
+const handlePostAction = (req, res, todo, promise) => {
+  promise.then(
     () => {
       if (wantsJSON(req)) {
         res.status(200).end();
       } else {
-        res.redirect(url.todosPath);
+        res.redirect(todoInListPath(todo));
       }
     },
     onRejectedRenderError(res)
@@ -69,16 +71,18 @@ const handlePostAction = (req, res, action) => {
 };
 
 // POST an a individual to-do: Update or delete
-app.post(url.todoPathPattern, (req, res) => {
+app.post(todoPathPattern, (req, res) => {
   const method = req.body._method;
   if (method === 'PUT') {
     // Update
     const todo = bodyToTodo(req.body);
-    handlePostAction(req, res, todosActions.createTodo(todo, db));
+    const promise = todosActions.createTodo(todo, db).payload;
+    handlePostAction(req, res, todo, promise);
   } else if (method === 'DELETE') {
     // Delete
     const todo = { id: req.params.id };
-    handlePostAction(req, res, todosActions.deleteTodo(todo, db));
+    const promise = todosActions.deleteTodo(todo, db).payload;
+    handlePostAction(req, res, todo, promise);
   } else {
     res.status(400).send('Invalid request');
   }
@@ -86,7 +90,7 @@ app.post(url.todoPathPattern, (req, res) => {
 
 // Get all todos
 /*
-app.get(url.todosPath, (req, res, next) => {
+app.get(todosPath, (req, res, next) => {
   if (wantsJSON(req)) {
     todosActions.getTodos(params, db).payload.then(
       (todos) => {
@@ -101,7 +105,7 @@ app.get(url.todosPath, (req, res, next) => {
 */
 
 // POST on the todos collection: Create a new to-do
-app.post(url.todosPath, (req, res) => {
+app.post(todosPath, (req, res) => {
   const todo = bodyToTodo(req.body);
   const id = uuid.v4();
   // Add id
@@ -109,9 +113,9 @@ app.post(url.todosPath, (req, res) => {
   todosActions.createTodo(todo, db).payload.then(
     () => {
       if (wantsJSON(req)) {
-        res.status(201).location(url.todoPath(todo)).end();
+        res.status(201).location(todoPath(todo)).end();
       } else {
-        res.redirect(url.todosPath);
+        res.redirect(todoInListPath(todo));
       }
     },
     onRejectedRenderError(res)

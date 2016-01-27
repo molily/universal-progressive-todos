@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import todoPropType from './todoPropType';
-import url from '../utils/url';
+import { todoPath } from '../utils/url';
 
 export default class DeleteTodoForm extends Component {
 
@@ -16,12 +16,12 @@ export default class DeleteTodoForm extends Component {
 
   render() {
     const { todo } = this.props;
-    return <form action={url.todoPath(todo)} method='post'
-      onSubmit={this.onSubmit} className='deleteTodoForm'>
+    return <form action={todoPath(todo)} method='post'
+      onSubmit={this.onSubmit} className='inline-form DeleteTodoForm'>
       <input type='hidden' name='_method' value='DELETE'/>
       <input type='hidden' name='id' value={todo.id}/>
-      <button type='submit' className='deleteTodoForm__submitButton'>
-        Delete
+      <button type='submit' className='DeleteTodoForm__submitButton'>
+        ❌ Delete
       </button>
     </form>;
   }

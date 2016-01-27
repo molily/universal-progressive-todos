@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import todoPropType from './todoPropType';
-import url from '../utils/url';
+import { todoPath } from '../utils/url';
 
 export default class CompleteTodoForm extends Component {
 
@@ -18,15 +18,15 @@ export default class CompleteTodoForm extends Component {
 
   render() {
     const { todo } = this.props;
-    return <form action={url.todoPath(todo)} method='post'
-      onSubmit={this.onSubmit} className='completeTodoForm'>
+    return <form action={todoPath(todo)} method='post'
+      onSubmit={this.onSubmit} className='inline-form CompleteTodoForm'>
       <input type='hidden' name='_method' value='PUT'/>
       <input type='hidden' name='id' value={todo.id}/>
       <input type='hidden' name='text' value={todo.text}/>
       <input type='hidden' name='completed' value={!todo.completed}/>
-      <button type='submit' className='completeTodoForm__submitButton'>
-        {todo.completed ? '☐' : '✅'}
-        <span className='accessibleHidden'>
+      <button type='submit' className='CompleteTodoForm__submitButton'>
+        {todo.completed ? '☐' : '✔'}
+        <span className='accessible-hidden'>
           {todo.completed ? 'Mark undone' : 'Mark done'}
         </span>
       </button>
