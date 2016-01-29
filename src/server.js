@@ -148,7 +148,7 @@ const routeMatchHandler = (res, error, redirectLocation, props) => {
       res.render('layout', {
         title: 'Todo list',
         content,
-        initialState: JSON.stringify(initialState, null, 2)
+        initialState: JSON.stringify(initialState)
       });
     },
     (reason) => {
