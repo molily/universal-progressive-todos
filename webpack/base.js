@@ -1,14 +1,17 @@
 import path from 'path';
 
 const filename = 'client.js';
-const destDir = '/static/';
+const destDir = 'static';
+const baseDir = path.resolve(__dirname, '..');
+const entry = path.resolve(baseDir, 'src', filename);
+const outputPath = path.resolve(baseDir, 'dist', destDir);
 
 export default {
-  entry: `./src/${filename}`,
+  entry: entry,
   output: {
-    path: path.resolve('dist', destDir),
+    path: outputPath,
     filename: filename,
-    publicPath: destDir,
+    publicPath: `/${destDir}/`,
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   module: {
