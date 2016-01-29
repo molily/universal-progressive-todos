@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import todosPropType from './todosPropType';
 import TodoList from './TodoList';
 
-export default class CompletedTodos extends Component {
+const completedFilter = (todo) => todo.completed;
 
-  render() {
-    const todos = this.props.todos.filter((todo) => todo.completed);
-    return <TodoList items={todos}/>;
-  }
-
-}
+const CompletedTodos = ({ todos }) =>
+  <TodoList items={todos.filter(completedFilter)}/>;
 
 CompletedTodos.propTypes = {
   todos: todosPropType
 };
+
+export default CompletedTodos;

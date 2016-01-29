@@ -1,34 +1,27 @@
-import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
+import React, { PropTypes } from 'react';
 import todoPropType from './todoPropType';
 import { todoPath } from '../utils/url';
 
-export default class DeleteTodoForm extends Component {
+const onSubmit = (props, event) => {
+  event.preventDefault();
+  props.deleteTodo(props.todo);
+};
 
-  constructor() {
-    super();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onSubmit(event) {
-    event.preventDefault();
-    this.props.deleteTodo(this.props.todo);
-  }
-
-  render() {
-    const { todo } = this.props;
-    return <form action={todoPath(todo)} method='post'
-      onSubmit={this.onSubmit} className='inline-form DeleteTodoForm'>
-      <input type='hidden' name='_method' value='DELETE'/>
-      <input type='hidden' name='id' value={todo.id}/>
-      <button type='submit' className='DeleteTodoForm__submitButton'>
-        ❌ Delete
-      </button>
-    </form>;
-  }
-
-}
+const DeleteTodoForm = (props) =>
+  <form action={todoPath(props.todo)} method='post'
+    onSubmit={_.partial(onSubmit, props)}
+    className='inline-form DeleteTodoForm'>
+    <input type='hidden' name='_method' value='DELETE'/>
+    <input type='hidden' name='id' value={props.todo.id}/>
+    <button type='submit' className='DeleteTodoForm__submitButton'>
+      ❌ Delete
+    </button>
+  </form>;
 
 DeleteTodoForm.propTypes = {
   todo: todoPropType,
   deleteTodo: PropTypes.func.isRequired
 };
+
+export default DeleteTodoForm;
