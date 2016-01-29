@@ -13,8 +13,9 @@ input, button {
   border: 1px solid #aaa;
   border-radius: 3px;
   padding: $std-padding-quarter $std-padding-half;
-  font-family: inherit;
+  line-height: 1.2;
   font-size: inherit;
+  font-family: inherit;
 }
 
 input {
@@ -70,10 +71,16 @@ button {
   text-align: center;
 }
 
-.CreateTodoForm__label, .CreateTodoForm__input {
-  margin-right: 10px;
+.CreateTodoForm__label,
+.CreateTodoForm__input {
+  margin-right: $std-padding-half;
 }
 
-.EditTodoForm__label {
-  margin-right: 10px;
+.StartEditTodoForm {
+  display: inline-block;
+  margin-right: $std-padding-half;
+}
+
+.EditTodoForm__input {
+  margin-right: $std-padding-half;
 }

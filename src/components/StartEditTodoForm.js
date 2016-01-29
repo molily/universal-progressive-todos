@@ -14,12 +14,13 @@ const StartEditTodoForm = (props) => {
     ...props.todo,
     editMode: true
   };
-  return <UpdateTodoForm todo={newTodo}
-    onSubmit={_.partial(onSubmit, props)}>
-    <button type='submit' className='StartEditTodoForm__submitButton'>
-      ✎ Edit
-    </button>
-  </UpdateTodoForm>;
+  return <div className='StartEditTodoForm'>
+    <UpdateTodoForm todo={newTodo} onSubmit={_.partial(onSubmit, props)}>
+      <button type='submit' className='StartEditTodoForm__submitButton'>
+        ✎ Edit
+      </button>
+    </UpdateTodoForm>
+  </div>;
 };
 
 StartEditTodoForm.propTypes = {
