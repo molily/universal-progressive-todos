@@ -42,14 +42,13 @@ const renderServerError = (res, error) => {
   res.status(500).send(error.message);
 };
 
-const bodyToTodo = (body) => {
-  return {
+const bodyToTodo = (body) =>
+  ({
     id: body.id,
     text: body.text,
     completed: body.completed === 'true',
     editMode: body.editMode === 'true'
-  };
-};
+  });
 
 const onRejectedRenderError = (res) => {
   return (reason) => {
