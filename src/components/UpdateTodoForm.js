@@ -11,7 +11,7 @@ const UpdateTodoForm = ({ children, todo, fields: rawFields, onSubmit }) => {
 
   const isEditing = _.partial(editingField, fields);
   const completedField = !isEditing('completed') &&
-    <input type='hidden' name='completed' value={!todo.completed}/>;
+    <input type='hidden' name='completed' value={todo.completed}/>;
   const textField = !isEditing('text') &&
     <input type='hidden' name='text' value={todo.text}/>;
   const editModeField = !isEditing('editMode') &&
