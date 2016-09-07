@@ -4,10 +4,10 @@ import todoPropType from './todoPropType';
 import UpdateTodoForm from './UpdateTodoForm';
 
 const onSubmit = (props, event) => {
-  event.preventDefault();
   const { todo } = props;
   const newTodo = { ...todo, completed: !todo.completed };
   props.updateTodo(newTodo);
+  event.preventDefault();
 };
 
 const CompleteTodoForm = (props) => {

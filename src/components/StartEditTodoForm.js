@@ -4,9 +4,9 @@ import todoPropType from './todoPropType';
 import UpdateTodoForm from './UpdateTodoForm';
 
 const onSubmit = (props, event) => {
-  event.preventDefault();
   const newTodo = { ...props.todo, editMode: true };
   props.updateTodo(newTodo);
+  event.preventDefault();
 };
 
 const StartEditTodoForm = (props) => {

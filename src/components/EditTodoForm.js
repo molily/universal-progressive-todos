@@ -18,13 +18,13 @@ export default class EditTodoForm extends Component {
   }
 
   onSubmit(event) {
-    event.preventDefault();
     const text = this.refs.text.value;
     this.props.updateTodo({
       ...this.props.todo,
       text,
       editMode: false
     });
+    event.preventDefault();
   }
 
   focusTextField() {
@@ -48,7 +48,7 @@ export default class EditTodoForm extends Component {
         https://github.com/facebook/react/issues/3066
         */}
         <input ref='text' type='text' name='text' defaultValue={newTodo.text}
-          placeholder='e.g., do the laundry' className='EditTodoForm__input'/>
+          placeholder='e.g., do the laundry' className='EditTodoForm__input' />
       </label>
       <button type='submit' className='EditTodoForm__submitButton'>
         💾 Save
