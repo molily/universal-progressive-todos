@@ -4,7 +4,10 @@ import todoPropType from './todoPropType';
 import { todoPath } from '../utils/url';
 
 const onSubmit = (props, event) => {
-  props.deleteTodo(props.todo);
+  const { todo } = props;
+  if (window.confirm(`Really delete this todo?\n${todo.text}`)) {
+    props.deleteTodo(props.todo);
+  }
   event.preventDefault();
 };
 
