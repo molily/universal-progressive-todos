@@ -5,7 +5,7 @@ import TodoList from './TodoList';
 const completedFilter = (todo) => todo.completed;
 
 const CompletedTodos = ({ todos }) =>
-  <TodoList items={todos.filter(completedFilter)}/>;
+  <TodoList items={todos.filter(completedFilter)} />;
 
 CompletedTodos.propTypes = {
   todos: todosPropType

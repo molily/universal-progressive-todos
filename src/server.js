@@ -123,7 +123,7 @@ app.post(todosPath, (req, res) => {
 
 const renderContent = (store, props) => {
   const element = <Provider store={store}>
-    <RouterContext {...props}/>
+    <RouterContext {...props} />
   </Provider>;
   return renderToString(element);
 };

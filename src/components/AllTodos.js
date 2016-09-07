@@ -8,8 +8,8 @@ import * as todosActions from '../actions/todosActions';
 const AllTodos = ({ todos, updateTodo, deleteTodo, createTodo }) =>
   <div>
     <TodoList todos={todos}
-      updateTodo={updateTodo} deleteTodo={deleteTodo}/>
-    <CreateTodoForm createTodo={createTodo}/>
+      updateTodo={updateTodo} deleteTodo={deleteTodo} />
+    <CreateTodoForm createTodo={createTodo} />
   </div>;
 
 AllTodos.needs = [

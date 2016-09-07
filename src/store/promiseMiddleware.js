@@ -12,9 +12,9 @@ export default () => {
       return next(action);
     }
 
-    const PENDING = type + '_PENDING';
+    const PENDING = `${type}_PENDING`;
     const SUCCESS = type;
-    const FAILURE = type + '_FAILURE';
+    const FAILURE = `${type}_FAILURE`;
 
     next({ type: PENDING });
 

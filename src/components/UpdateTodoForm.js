@@ -11,16 +11,16 @@ const UpdateTodoForm = ({ children, todo, fields: rawFields, onSubmit }) => {
 
   const isEditing = _.partial(editingField, fields);
   const completedField = !isEditing('completed') &&
-    <input type='hidden' name='completed' value={todo.completed}/>;
+    <input type='hidden' name='completed' value={todo.completed} />;
   const textField = !isEditing('text') &&
-    <input type='hidden' name='text' value={todo.text}/>;
+    <input type='hidden' name='text' value={todo.text} />;
   const editModeField = !isEditing('editMode') &&
-    <input type='hidden' name='editMode' value={todo.editMode}/>;
+    <input type='hidden' name='editMode' value={todo.editMode} />;
 
   return <form action={todoPath(todo)} method='post'
     onSubmit={onSubmit} className='inline-form'>
-    <input type='hidden' name='_method' value='PUT'/>
-    <input type='hidden' name='id' value={todo.id}/>
+    <input type='hidden' name='_method' value='PUT' />
+    <input type='hidden' name='id' value={todo.id} />
     {textField}
     {completedField}
     {editModeField}

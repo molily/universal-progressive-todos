@@ -42,16 +42,18 @@ button {
 
 .todo {
   display: flex;
+  align-items: center;
   border-bottom: 1px solid #eee;
   padding: 20px 10px;
 }
 
-.todo--completed {
-  color: gray;
+.todo--active {
+  color: green;
 }
 
-.todo--active {
-  color: blue;
+.todo--completed {
+  color: gray;
+  text-decoration: line-through;
 }
 
 .todo__leftControls {

@@ -14,7 +14,7 @@ const initClient = () => {
   );
   const store = createStore(initialState);
   const component = <Provider store={store}>
-    <Router routes={routes} history={browserHistory}/>
+    <Router routes={routes} history={browserHistory} />
   </Provider>;
   const target = $('content');
   render(component, target);

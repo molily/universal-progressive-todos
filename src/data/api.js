@@ -3,13 +3,19 @@ import { todosPath, todoPath, todoIdFromPath } from '../utils/url';
 
 const jsonMime = 'application/json';
 
+const hasOwnProperty = (object, property) =>
+    Object.prototype.hasOwnProperty.call(object, property);
+
 // Serializes an object to an application/x-www-form-urlencoded string
 const serialize = (object) => {
   const pairs = [];
   for (const property in object) {
-    if (!object.hasOwnProperty(property)) continue;
-    const value = object[property];
-    pairs.push(encodeURIComponent(property) + '=' + encodeURIComponent(value));
+    if (hasOwnProperty(object, property)) {
+      const value = object[property];
+      const encodedProperty = encodeURIComponent(property);
+      const encodedValue = encodeURIComponent(value);
+      pairs.push(`${encodedProperty}=${encodedValue}`);
+    }
   }
   return pairs.join('&');
 };
@@ -19,7 +25,7 @@ const serialize = (object) => {
 // This is not a generic Ajax function.
 const httpRequest = (method, path, payload) => {
   return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
+    const xhr = new window.XMLHttpRequest();
     xhr.onload = () => {
       const { responseText } = xhr;
       let response = responseText;
