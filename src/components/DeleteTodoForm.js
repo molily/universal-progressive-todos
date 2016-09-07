@@ -5,9 +5,11 @@ import { todoPath } from '../utils/url';
 
 const onSubmit = (props, event) => {
   const { todo } = props;
+  /* eslint-disable no-alert */
   if (window.confirm(`Really delete this todo?\n${todo.text}`)) {
     props.deleteTodo(props.todo);
   }
+  /* eslint-enable no-alert */
   event.preventDefault();
 };
 
