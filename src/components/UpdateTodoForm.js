@@ -32,7 +32,7 @@ UpdateTodoForm.propTypes = {
   children: PropTypes.node.isRequired,
   onSubmit: PropTypes.func.isRequired,
   todo: todoPropType,
-  fields: PropTypes.array
+  fields: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default UpdateTodoForm;

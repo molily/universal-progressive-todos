@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 import _ from 'lodash';
 import React, { PropTypes } from 'react';
 import todoPropType from './todoPropType';
