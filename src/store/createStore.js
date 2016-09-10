@@ -3,4 +3,4 @@ import promiseMiddleware from './promiseMiddleware';
 import rootReducer from '../reducers/rootReducer';
 
 export default (initialState) =>
-  applyMiddleware(promiseMiddleware)(createStore)(rootReducer, initialState);
+  createStore(rootReducer, initialState, applyMiddleware(promiseMiddleware));
