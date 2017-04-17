@@ -1,29 +1,20 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import PropTypes from 'prop-types';
 import todosPropType from './todosPropType';
 import TodoList from './TodoList';
 import CreateTodoForm from './CreateTodoForm';
-import * as todosActions from '../actions/todosActions';
 
 const AllTodos = ({ todos, updateTodo, deleteTodo, createTodo }) =>
-  <div>
-    <TodoList todos={todos}
-      updateTodo={updateTodo} deleteTodo={deleteTodo} />
+  <main>
+    <TodoList todos={todos} updateTodo={updateTodo} deleteTodo={deleteTodo} />
     <CreateTodoForm createTodo={createTodo} />
-  </div>;
-
-AllTodos.needs = [
-  todosActions.getTodos
-];
+  </main>;
 
 AllTodos.propTypes = {
-  todos: todosPropType,
+  todos: todosPropType.isRequired,
   createTodo: PropTypes.func.isRequired,
   updateTodo: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired
 };
 
-export default connect(
-  (state) => state,
-  todosActions
-)(AllTodos);
+export default AllTodos;

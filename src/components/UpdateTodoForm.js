@@ -1,15 +1,14 @@
 import _ from 'lodash';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import todoPropType from './todoPropType';
 import { todoPath } from '../utils/url';
 
-const editingField = (fields, field) =>
+const isEditingField = (fields, field) =>
   fields.indexOf(field) !== -1;
 
-const UpdateTodoForm = ({ children, todo, fields: rawFields, onSubmit }) => {
-  const fields = rawFields || [];
-
-  const isEditing = _.partial(editingField, fields);
+const UpdateTodoForm = ({ children, todo, fields, onSubmit }) => {
+  const isEditing = _.partial(isEditingField, fields);
   const completedField = !isEditing('completed') &&
     <input type='hidden' name='completed' value={todo.completed} />;
   const textField = !isEditing('text') &&
@@ -28,10 +27,15 @@ const UpdateTodoForm = ({ children, todo, fields: rawFields, onSubmit }) => {
   </form>;
 };
 
+UpdateTodoForm.defaultProps = {
+  fields: []
+};
+
 UpdateTodoForm.propTypes = {
   children: PropTypes.node.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  todo: todoPropType,
+  todo: todoPropType.isRequired,
+  // The fields being edited, inputs given in the children
   fields: PropTypes.arrayOf(PropTypes.string)
 };
 

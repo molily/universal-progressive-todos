@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import todoPropType from './todoPropType';
 
-export default PropTypes.arrayOf(todoPropType).isRequired;
+export default PropTypes.arrayOf(todoPropType);

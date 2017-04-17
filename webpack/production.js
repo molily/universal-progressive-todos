@@ -4,25 +4,19 @@ import base from './base';
 export default {
   ...base,
   devtool: 'source-map',
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/
-      }
-    ]
-  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    }),
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
       compress: {
-        screw_ie8: true, // React doesn’t support IE8
-        warnings: false
+        warnings: false,
+        // React doesn’t support IE 8 anyway, so no IE 8 support needed
+        screw_ie8: true
       },
       mangle: {
         screw_ie8: true

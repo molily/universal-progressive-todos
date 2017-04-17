@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import todoPropType from './todoPropType';
 import UpdateTodoForm from './UpdateTodoForm';
 
-export default class EditTodoForm extends Component {
+export default class EditTodoForm extends PureComponent {
 
   constructor() {
     super();
@@ -59,6 +60,6 @@ export default class EditTodoForm extends Component {
 }
 
 EditTodoForm.propTypes = {
-  todo: todoPropType,
+  todo: todoPropType.isRequired,
   updateTodo: PropTypes.func.isRequired
 };

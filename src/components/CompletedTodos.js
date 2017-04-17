@@ -1,14 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import todosPropType from './todosPropType';
 import TodoList from './TodoList';
+import CreateTodoForm from './CreateTodoForm';
 
-const completedFilter = (todo) => todo.completed;
-
-const CompletedTodos = ({ todos }) =>
-  <TodoList items={todos.filter(completedFilter)} />;
+const CompletedTodos = ({ todos, updateTodo, deleteTodo, createTodo }) =>
+  <main>
+    <TodoList todos={todos.filter((todo) => todo.completed)}
+      updateTodo={updateTodo} deleteTodo={deleteTodo} />
+    <CreateTodoForm createTodo={createTodo} />
+  </main>;
 
 CompletedTodos.propTypes = {
-  todos: todosPropType
+  todos: todosPropType.isRequired,
+  updateTodo: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  createTodo: PropTypes.func.isRequired
 };
 
 export default CompletedTodos;

@@ -15,11 +15,11 @@ export default {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        loader: 'babel-loader'
       }
     ]
   }

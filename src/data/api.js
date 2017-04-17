@@ -4,7 +4,7 @@ import { todosPath, todoPath, todoIdFromPath } from '../utils/url';
 const jsonMime = 'application/json';
 
 const hasOwnProperty = (object, property) =>
-    Object.prototype.hasOwnProperty.call(object, property);
+  Object.prototype.hasOwnProperty.call(object, property);
 
 // Serializes an object to an application/x-www-form-urlencoded string
 const serialize = (object) => {
@@ -21,9 +21,12 @@ const serialize = (object) => {
 };
 
 // Sends a HTTP request that emulates the non-JS form behavior.
-// Sends PUT and DELETE requests as POST with a _method parameter.
-// This is not a generic Ajax function.
-const httpRequest = (method, path, payload) => {
+// The form data is encoding with application/x-www-form-urlencoded.
+// Requests JSON from the server. Sends PUT and DELETE requests as POST
+// with an additional _method parameter.
+// Note, this is not a generic Ajax function.
+// Returns a promise that is resolved with the server response.
+const sendForm = (method, path, payload) => {
   return new Promise((resolve, reject) => {
     const xhr = new window.XMLHttpRequest();
     xhr.onload = () => {
@@ -64,18 +67,18 @@ const httpRequest = (method, path, payload) => {
   });
 };
 
-export const fetchTodos = partial(httpRequest, 'GET', todosPath);
+export const fetchTodos = partial(sendForm, 'GET', todosPath);
 
 export const updateTodo = (todo) =>
-  httpRequest('PUT', todoPath(todo), todo);
+  sendForm('PUT', todoPath(todo), todo);
 
 export const deleteTodo = (todo) =>
-  httpRequest('DELETE', todoPath(todo));
+  sendForm('DELETE', todoPath(todo));
 
 // Creates a new to-do on the server, returns a promise for the to-do
 // with the new ID.
 export const createTodo = (todo) => {
-  return httpRequest('POST', todosPath, todo).then(
+  return sendForm('POST', todosPath, todo).then(
     (locationHeader) => ({
       ...todo,
       // Extract the new ID

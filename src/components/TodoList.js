@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import todosPropType from './todosPropType';
 import TodoListItem from './TodoListItem';
 import compareTodos from '../utils/compareTodos';
@@ -12,7 +13,7 @@ const TodoList = ({ todos, updateTodo, deleteTodo }) => {
 };
 
 TodoList.propTypes = {
-  todos: todosPropType,
+  todos: todosPropType.isRequired,
   updateTodo: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired
 };

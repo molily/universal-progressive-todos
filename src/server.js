@@ -1,20 +1,26 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import compression from 'compression';
 import uuid from 'uuid';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
+import { StaticRouter, matchPath } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import partial from './utils/partial';
 import { todosPath, todoPathPattern, todoPath, todoInListPath }
   from './utils/url';
 import Database from './data/Database';
 import seedDatabase from './data/seedDatabase';
-import routes from './routes';
 import createStore from './store/createStore';
-import fetchComponentData from './data/fetchComponentData';
 import * as todosActions from './actions/todosActions';
-import webpackDevServer from '../webpack/devServer';
+import installWebpackDevServer from '../webpack/installWebpackDevServer';
+import App from './components/App';
+import routes from './routes';
+
+const networkInterface = '0.0.0.0';
+const port = 3333;
+
+const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const app = express();
 
@@ -27,11 +33,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static('dist'));
 
-// Webpack development server
-if (process.env.NODE_ENV !== 'production') {
-  webpackDevServer(app);
+// Install Webpack development server
+if (isDevelopment) {
+  installWebpackDevServer(app);
 }
 
+// Enable gzip compression
+if (isProduction) {
+  app.use(compression());
+}
+
+// Set up and seed database
 const db = new Database('./db-todos');
 seedDatabase(db);
 
@@ -39,7 +51,9 @@ const wantsJSON = (req) =>
   req.accepts('html', 'json') === 'json';
 
 const renderServerError = (res, error) => {
-  res.status(500).send(error.message);
+  res.status(500).render('error', {
+    error: isDevelopment ? error : null
+  });
 };
 
 const bodyToTodo = (body) =>
@@ -50,6 +64,8 @@ const bodyToTodo = (body) =>
     editMode: body.editMode === 'true'
   });
 
+// Creates a function that handles promise rejection
+// by rendering a server error.
 const onRejectedRenderError = (res) => {
   return (reason) => {
     renderServerError(res, reason);
@@ -69,7 +85,7 @@ const handlePostAction = (req, res, todo, promise) => {
   );
 };
 
-// POST an a individual to-do: Update or delete
+// POST on a individual to-do: Update or delete
 app.post(todoPathPattern, (req, res) => {
   const method = req.body._method;
   if (method === 'PUT') {
@@ -121,58 +137,71 @@ app.post(todosPath, (req, res) => {
   );
 });
 
-const renderContent = (store, props) => {
+const matchUrl = (url) => {
+  for (let i = 0, l = routes.length; i < l; i++) {
+    const route = routes[i];
+    const match = matchPath(url, route);
+    if (match) {
+      return { route, match };
+    }
+  }
+  return null;
+};
+
+// Loads the data for the current route by calling the action creators
+// specified in the component needs. Returns a promise.
+const loadData = (url, route, params, store) => {
+  const needs = route.component.needs || [];
+  const promises = needs.map((need) =>
+    // Dispatch action creators specified by the component needs
+    store.dispatch(need(params, db))
+  );
+  return Promise.all(promises);
+};
+
+const renderApp = (url, store) => {
+  const context = {};
   const element = <Provider store={store}>
-    <RouterContext {...props} />
+    <StaticRouter location={url} context={context}>
+      <App />
+    </StaticRouter>
   </Provider>;
   return renderToString(element);
 };
 
-const routeMatchHandler = (res, error, redirectLocation, props) => {
-  if (error) {
-    renderServerError(res, error);
-    return;
-  }
-  if (!props) {
-    res.status(404).send('Not Found');
-    return;
-  }
-  const store = createStore();
-  fetchComponentData(
-    store.dispatch, props.components, props.params, db
-  ).then(
-    () => {
-      const content = renderContent(store, props);
-      const initialState = store.getState();
-      res.render('layout', {
-        title: 'Todo list',
-        content,
-        initialState: JSON.stringify(initialState)
-      });
-    },
-    (reason) => {
-      renderServerError(res, reason);
-    }
-  );
-};
-
 app.get('*', (req, res) => {
-  // Server-side route matching with react-router
-  // https://github.com/rackt/react-router/blob/master/docs/guides/advanced/ServerRendering.md
-  match(
-    { routes, location: req.url },
-    partial(routeMatchHandler, res)
-  );
+  const { url } = req;
+  // Redux store
+  const store = createStore();
+
+  const matchData = matchUrl(url);
+  if (matchData) {
+    // Load data to fill the store
+    loadData(url, matchData.route, matchData.match.params, store)
+      .then(() => {
+        // Render the app HTML into the layout
+        const html = renderApp(url, store);
+        res.render('layout', {
+          title: 'Todo list',
+          content: html,
+          // Hydrate Redux store state
+          initialState: JSON.stringify(store.getState())
+        });
+      })
+      // Catch errors when loading data or rendering the app
+      .catch(onRejectedRenderError(res));
+  } else {
+    res.sendStatus(404);
+  }
 });
 
-const networkInterface = '0.0.0.0';
-const port = 3333;
 
 app.listen(port, networkInterface, (error) => {
   if (error) {
     console.error(error);
     return;
   }
-  //process.stdout.write('\u001B[2J\u001B[0f');
+  // Clear screen
+  process.stdout.write('\u001B[2J\u001B[0f');
   console.log(`Server running at http://${networkInterface}:${port}`);
 });

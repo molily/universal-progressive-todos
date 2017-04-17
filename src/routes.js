@@ -1,28 +1,19 @@
-import AllTodos from './components/AllTodos';
-import ActiveTodos from './components/ActiveTodos';
-import CompletedTodos from './components/CompletedTodos';
-import CreateTodoForm from './components/CreateTodoForm';
-import EditTodoForm from './components/EditTodoForm';
+import AllTodosContainer from './containers/AllTodosContainer';
+import ActiveTodosContainer from './containers/ActiveTodosContainer';
+import CompletedTodosContainer from './containers/CompletedTodosContainer';
 
 export default [
   {
     path: '/',
-    component: AllTodos
+    exact: true,
+    component: AllTodosContainer
   },
   {
     path: '/active',
-    component: ActiveTodos
+    component: ActiveTodosContainer
   },
   {
     path: '/completed',
-    component: CompletedTodos
-  },
-  {
-    path: '/new',
-    component: CreateTodoForm
-  },
-  {
-    path: '/edit/:id',
-    component: EditTodoForm
+    component: CompletedTodosContainer
   }
 ];

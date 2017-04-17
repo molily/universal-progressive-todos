@@ -134,7 +134,7 @@ module.exports = {
     // Require parens in arrow function arguments
     // (a) => {}, not a => {}
     // http://eslint.org/docs/rules/arrow-parens
-    'arrow-parens': 'error',
+    'arrow-parens': ['error', 'always'],
     // Enforce Function Style
     // Function expressions, not declarations
     // f = () => {} or f = function() {}, not function f() {}

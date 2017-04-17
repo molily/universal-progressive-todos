@@ -26,7 +26,7 @@ export default () => {
       .catch((error) => {
         next({ type: FAILURE, error: true, payload: error });
         /* eslint-disable no-console */
-        console.log(error);
+        console.error(error);
         /* eslint-enable no-console */
         return false;
       });

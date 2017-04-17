@@ -5,18 +5,24 @@ export default {
   ...base,
   devtool: 'eval',
   entry: [
-    'webpack-hot-middleware/client',
+    'webpack-hot-middleware/client?reload=true&noInfo=true',
     base.entry
   ],
   module: {
-    preLoaders: [
+    rules: [
+      ...base.module.rules,
       {
+        enforce: 'pre',
         test: /\.js$/,
-        loader: 'eslint',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+        options: {
+          // Do not emit errors, it breaks hot loading of components.
+          emitError: false,
+          emitWarning: true
+        }
       }
-    ],
-    loaders: base.module.loaders
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({

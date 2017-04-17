@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import todoPropType from './todoPropType';
 import CompleteTodoForm from './CompleteTodoForm';
@@ -22,8 +23,7 @@ const TodoListItem = (props) => {
     <EditTodoForm todo={todo} updateTodo={updateTodo} /> :
     <span className='todo__text'
       onDoubleClick={_.partial(startEditTodo, props)}>{todo.text}</span>;
-  const accessibleLabel = todo.completed ?
-    'Done:' : 'Todo:';
+  const accessibleLabel = todo.completed ? 'Done:' : 'Todo:';
   return <li key={todo.id} id={`todo-${todo.id}`} className={className}>
     <span className='accessible-hidden'>{accessibleLabel}</span>
     <div className='todo__body'>{body}</div>
@@ -38,7 +38,7 @@ const TodoListItem = (props) => {
 };
 
 TodoListItem.propTypes = {
-  todo: todoPropType,
+  todo: todoPropType.isRequired,
   updateTodo: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired
 };

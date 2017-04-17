@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unused-prop-types */
 import _ from 'lodash';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import todoPropType from './todoPropType';
 import UpdateTodoForm from './UpdateTodoForm';
 
@@ -28,7 +29,7 @@ const CompleteTodoForm = (props) => {
 };
 
 CompleteTodoForm.propTypes = {
-  todo: todoPropType,
+  todo: todoPropType.isRequired,
   updateTodo: PropTypes.func.isRequired
 };
 

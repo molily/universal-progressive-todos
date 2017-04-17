@@ -1,20 +1,25 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, browserHistory } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import createStore from './store/createStore';
-import routes from './routes';
+import App from './components/App';
 
 const $ = (id) =>
   window.document.getElementById(id);
 
 const initClient = () => {
+  // Rehydrate Redux store state from server
   const initialState = JSON.parse(
     $('initialState').textContent
   );
+  // Create the Redux store
   const store = createStore(initialState);
+  // Render component tree
   const component = <Provider store={store}>
-    <Router routes={routes} history={browserHistory} />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>;
   const target = $('content');
   render(component, target);

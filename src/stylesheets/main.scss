@@ -9,6 +9,10 @@ html {
   color: $color;
 }
 
+body {
+  margin: 1rem;
+}
+
 input, button {
   border: 1px solid #aaa;
   border-radius: 3px;
@@ -35,7 +39,19 @@ button {
   vertical-align: top;
 }
 
+.nav__list {
+  display: flex;
+  padding: 0;
+}
+
+.nav__item {
+  list-style-type: none;
+  padding-right: 1rem;
+}
+
 .todos {
+  border-top: 1px solid #eee;
+  max-width: 50rem;
   padding: 0;
   list-style: none;
 }
