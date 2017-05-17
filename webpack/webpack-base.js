@@ -14,6 +14,12 @@ export default {
     publicPath: `/${destDir}/`,
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
+  resolve: {
+    alias: {
+      'react': 'preact-compat',
+      'react-dom': 'preact-compat'
+    }
+  },
   module: {
     rules: [
       {

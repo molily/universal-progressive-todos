@@ -2,10 +2,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import uuid from 'uuid';
-import React from 'react';
-import { renderToString } from 'react-dom/server';
+import { h } from 'preact';
+import render from 'preact-render-to-string';
 import { StaticRouter, matchPath } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider } from 'preact-redux';
 import { todosPath, todoPathPattern, todoPath, todoInListPath }
   from './utils/url';
 import Database from './data/Database';
@@ -103,22 +103,6 @@ app.post(todoPathPattern, (req, res) => {
   }
 });
 
-// Get all todos
-/*
-app.get(todosPath, (req, res, next) => {
-  if (wantsJSON(req)) {
-    todosActions.getTodos(params, db).payload.then(
-      (todos) => {
-        res.json(todos);
-      },
-      onRejectedRenderError(res)
-    );
-  } else {
-    next();
-  }
-});
-*/
-
 // POST on the todos collection: Create a new to-do
 app.post(todosPath, (req, res) => {
   const todo = bodyToTodo(req.body);
@@ -160,13 +144,18 @@ const loadData = (url, route, params, store) => {
 };
 
 const renderApp = (url, store) => {
+  console.log('renderApp', url);
   const context = {};
-  const element = <Provider store={store}>
-    <StaticRouter location={url} context={context}>
-      <App />
-    </StaticRouter>
-  </Provider>;
-  return renderToString(element);
+  const element = <div>
+    <Provider store={store}>
+      in Provider
+      <StaticRouter location={url} context={context}>
+        in StaticRouter
+        <App />
+      </StaticRouter>
+    </Provider>
+  </div>;
+  return render(element);
 };
 
 app.get('*', (req, res) => {
@@ -179,8 +168,11 @@ app.get('*', (req, res) => {
     // Load data to fill the store
     loadData(url, matchData.route, matchData.match.params, store)
       .then(() => {
+        console.log('data loaded');
         // Render the app HTML into the layout
         const html = renderApp(url, store);
+        console.log('html', typeof html, html);
+        console.dir(html);
         res.render('layout', {
           title: 'Todo list',
           content: html,

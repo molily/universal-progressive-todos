@@ -1,9 +1,11 @@
-import React, { PureComponent } from 'react';
+import { h } from 'preact';
+import { Component } from 'preact-compat';
 import PropTypes from 'prop-types';
 import todoPropType from './todoPropType';
 import UpdateTodoForm from './UpdateTodoForm';
 
-export default class EditTodoForm extends PureComponent {
+// export default class EditTodoForm extends PureComponent {
+export default class EditTodoForm extends Component {
 
   constructor() {
     super();
@@ -12,6 +14,13 @@ export default class EditTodoForm extends PureComponent {
 
   componentDidMount() {
     this.focusTextField();
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !(
+      this.props.todo === nextProps.todo &&
+      this.props.updateTodo === nextProps.updateTodo
+    );
   }
 
   componentDidUpdate() {
@@ -34,9 +43,9 @@ export default class EditTodoForm extends PureComponent {
     text.focus();
   }
 
-  render() {
+  render(props) {
     const newTodo = {
-      ...this.props.todo,
+      ...props.todo,
       editMode: false
     };
     const fields = [ 'text' ];
@@ -44,10 +53,6 @@ export default class EditTodoForm extends PureComponent {
       onSubmit={this.onSubmit}>
       <label>
         <span className='accessible-hidden'>Edit todo:</span>
-        {/*
-        autofocus will not be in the server-rendered markup:
-        https://github.com/facebook/react/issues/3066
-        */}
         <input ref='text' type='text' name='text' defaultValue={newTodo.text}
           placeholder='e.g., do the laundry' className='EditTodoForm__input' />
       </label>

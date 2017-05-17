@@ -13,7 +13,8 @@
   ],
   "plugins": [
     "transform-object-rest-spread",
-    "lodash"
+    "lodash",
+    [ "transform-react-jsx", { "pragma": "h" } ]
   ],
   "env": {
     "production": {

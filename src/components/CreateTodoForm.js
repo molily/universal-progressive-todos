@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React from 'react';
+import { h } from 'preact';
 import PropTypes from 'prop-types';
 import { todosPath } from '../utils/url';
 
