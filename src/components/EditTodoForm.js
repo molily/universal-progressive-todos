@@ -34,9 +34,9 @@ export default class EditTodoForm extends PureComponent {
     this.refInput.focus();
   }
 
-  render(props) {
+  render() {
     const newTodo = {
-      ...props.todo,
+      ...this.props.todo,
       editMode: false
     };
     const fields = [ 'text' ];
