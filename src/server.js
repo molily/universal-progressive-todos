@@ -148,13 +148,11 @@ const loadData = (url, route, params, store) => {
 
 const renderApp = (url, store) => {
   const context = {};
-  const element = <div>
-    <Provider store={store}>
-      <StaticRouter location={url} context={context}>
-        <App />
-      </StaticRouter>
-    </Provider>
-  </div>;
+  const element = <Provider store={store}>
+    <StaticRouter location={url} context={context}>
+      <App />
+    </StaticRouter>
+  </Provider>;
   return render(element);
 };
 
