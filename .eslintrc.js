@@ -21,7 +21,7 @@ module.exports = {
 
   settings: {
     react: {
-      "pragma": "h"
+      pragma: 'h'
     }
   },
 
