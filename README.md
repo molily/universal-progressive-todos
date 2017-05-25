@@ -19,8 +19,8 @@ I think the key is to have the data loading logic in one place, or to have a hig
 ## Starting the server
 
 ```
-$ npm install
-$ npm start
+$ yarn install
+$ yarn start
 ```
 
 Then open [http://localhost:3333](http://localhost:3333) in your browser.
