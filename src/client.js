@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { render } from 'preact-compat';
 import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'preact-redux';
+import { Provider } from 'react-redux';
 import createStore from './store/createStore';
 import App from './components/App';
 
@@ -17,14 +17,11 @@ const initClient = () => {
   const store = createStore(initialState);
   // Render component tree
   const component = <Provider store={store}>
-    in Provider
     <BrowserRouter>
-      in BrowserRouter
       <App />
     </BrowserRouter>
   </Provider>;
   const target = $('content');
-  console.log('client component', component, target);
   render(component, target);
 };
 

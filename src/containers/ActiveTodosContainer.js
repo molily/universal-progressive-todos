@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { connect } from 'preact-redux';
+import { connect } from 'react-redux';
 import ActiveTodos from '../components/ActiveTodos';
 import * as todosActions from '../actions/todosActions';
 

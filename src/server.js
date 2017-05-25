@@ -1,3 +1,7 @@
+// Enable aliasing to satisfy react-redux’ and react-router’s
+// dependencies on react
+import 'module-alias/register';
+
 import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
@@ -5,7 +9,7 @@ import uuid from 'uuid';
 import { h } from 'preact';
 import render from 'preact-render-to-string';
 import { StaticRouter, matchPath } from 'react-router-dom';
-import { Provider } from 'preact-redux';
+import { Provider } from 'react-redux';
 import { todosPath, todoPathPattern, todoPath, todoInListPath }
   from './utils/url';
 import Database from './data/Database';
@@ -106,9 +110,8 @@ app.post(todoPathPattern, (req, res) => {
 // POST on the todos collection: Create a new to-do
 app.post(todosPath, (req, res) => {
   const todo = bodyToTodo(req.body);
-  const id = uuid.v4();
   // Add id
-  todo.id = id;
+  todo.id = uuid.v4();
   todosActions.createTodo(todo, db).payload.then(
     () => {
       if (wantsJSON(req)) {
@@ -144,13 +147,10 @@ const loadData = (url, route, params, store) => {
 };
 
 const renderApp = (url, store) => {
-  console.log('renderApp', url);
   const context = {};
   const element = <div>
     <Provider store={store}>
-      in Provider
       <StaticRouter location={url} context={context}>
-        in StaticRouter
         <App />
       </StaticRouter>
     </Provider>
@@ -168,11 +168,8 @@ app.get('*', (req, res) => {
     // Load data to fill the store
     loadData(url, matchData.route, matchData.match.params, store)
       .then(() => {
-        console.log('data loaded');
         // Render the app HTML into the layout
         const html = renderApp(url, store);
-        console.log('html', typeof html, html);
-        console.dir(html);
         res.render('layout', {
           title: 'Todo list',
           content: html,

@@ -1,14 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 import { h } from 'preact';
-// import { Switch, Route, NavLink } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
-// import routes from '../routes';
+import { Switch, Route, NavLink } from 'react-router-dom';
+import routes from '../routes';
 
 export default () => {
-  console.log('App');
   return (
     <div>
-      in App
       <h1>Todos</h1>
       <nav className='nav'>
         <ul className='nav__list'>
@@ -23,13 +20,11 @@ export default () => {
           </li>
         </ul>
       </nav>
-      {/*
       <Switch>
         {routes.map((route, index) =>
           <Route key={index} {...route} />
         )}
       </Switch>
-      */}
     </div>
   );
 };
