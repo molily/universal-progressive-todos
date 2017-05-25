@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import { h } from 'preact';
 import { Component } from 'preact-compat';
 import PropTypes from 'prop-types';
@@ -28,7 +29,7 @@ export default class EditTodoForm extends Component {
   }
 
   onSubmit(event) {
-    const text = this.refs.text.value;
+    const text = this.refInput.value;
     this.props.updateTodo({
       ...this.props.todo,
       text,
@@ -38,9 +39,8 @@ export default class EditTodoForm extends Component {
   }
 
   focusTextField() {
-    const { text } = this.refs;
-    text.select();
-    text.focus();
+    this.refInput.select();
+    this.refInput.focus();
   }
 
   render(props) {
@@ -49,12 +49,21 @@ export default class EditTodoForm extends Component {
       editMode: false
     };
     const fields = [ 'text' ];
-    return <UpdateTodoForm todo={newTodo} fields={fields}
-      onSubmit={this.onSubmit}>
+    return <UpdateTodoForm
+      todo={newTodo}
+      fields={fields}
+      onSubmit={this.onSubmit}
+    >
       <label>
         <span className='accessible-hidden'>Edit todo:</span>
-        <input ref='text' type='text' name='text' defaultValue={newTodo.text}
-          placeholder='e.g., do the laundry' className='EditTodoForm__input' />
+        <input
+          ref={(input) => { this.refInput = input; }}
+          type='text'
+          name='text'
+          defaultValue={newTodo.text}
+          placeholder='e.g., do the laundry'
+          className='EditTodoForm__input'
+        />
       </label>
       <button type='submit' className='EditTodoForm__submitButton'>
         💾 Save

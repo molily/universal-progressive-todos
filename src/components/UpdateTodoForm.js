@@ -16,8 +16,12 @@ const UpdateTodoForm = ({ children, todo, fields, onSubmit }) => {
   const editModeField = !isEditing('editMode') &&
     <input type='hidden' name='editMode' value={todo.editMode} />;
 
-  return <form action={todoPath(todo)} method='post'
-    onSubmit={onSubmit} className='inline-form'>
+  return <form
+    action={todoPath(todo)}
+    method='post'
+    onSubmit={onSubmit}
+    className='inline-form'
+  >
     <input type='hidden' name='_method' value='PUT' />
     <input type='hidden' name='id' value={todo.id} />
     {textField}

@@ -14,12 +14,20 @@ const onSubmit = (props, event) => {
 };
 
 const CreateTodoForm = (props) =>
-  <form action={todosPath} method='post' onSubmit={_.partial(onSubmit, props)}
-    className='inline-form CreateTodoForm'>
+  <form
+    action={todosPath}
+    method='post'
+    onSubmit={_.partial(onSubmit, props)}
+    className='inline-form CreateTodoForm'
+  >
     <label>
       <span className='CreateTodoForm__label'>Create a new todo:</span>
-      <input type='text' name='text' placeholder='e.g., do the laundry'
-        className='CreateTodoForm__input' />
+      <input
+        type='text'
+        name='text'
+        placeholder='e.g., do the laundry'
+        className='CreateTodoForm__input'
+      />
     </label>
     <button type='submit' className='CreateTodoForm__submitButton'>
       Create

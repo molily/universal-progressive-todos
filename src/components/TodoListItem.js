@@ -21,8 +21,12 @@ const TodoListItem = (props) => {
   );
   const body = todo.editMode ?
     <EditTodoForm todo={todo} updateTodo={updateTodo} /> :
-    <span className='todo__text'
-      onDoubleClick={_.partial(startEditTodo, props)}>{todo.text}</span>;
+    <span
+      className='todo__text'
+      onDoubleClick={_.partial(startEditTodo, props)}
+    >
+      {todo.text}
+    </span>;
   const accessibleLabel = todo.completed ? 'Done:' : 'Todo:';
   return <li key={todo.id} id={`todo-${todo.id}`} className={className}>
     <span className='accessible-hidden'>{accessibleLabel}</span>

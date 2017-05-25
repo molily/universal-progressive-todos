@@ -6,8 +6,11 @@ import CreateTodoForm from './CreateTodoForm';
 
 const ActiveTodos = ({ todos, updateTodo, deleteTodo, createTodo }) =>
   <main>
-    <TodoList todos={todos.filter((todo) => !todo.completed)}
-      updateTodo={updateTodo} deleteTodo={deleteTodo} />
+    <TodoList
+      todos={todos.filter((todo) => !todo.completed)}
+      updateTodo={updateTodo}
+      deleteTodo={deleteTodo}
+    />
     <CreateTodoForm createTodo={createTodo} />
   </main>;
 

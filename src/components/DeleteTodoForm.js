@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unused-prop-types */
+/* eslint-disable react/no-unused-prop-types, jsx-a11y/accessible-emoji */
 import _ from 'lodash';
 import { h } from 'preact';
 import PropTypes from 'prop-types';
@@ -16,9 +16,12 @@ const onSubmit = (props, event) => {
 };
 
 const DeleteTodoForm = (props) =>
-  <form action={todoPath(props.todo)} method='post'
+  <form
+    action={todoPath(props.todo)}
+    method='post'
     onSubmit={_.partial(onSubmit, props)}
-    className='inline-form DeleteTodoForm'>
+    className='inline-form DeleteTodoForm'
+  >
     <input type='hidden' name='_method' value='DELETE' />
     <input type='hidden' name='id' value={props.todo.id} />
     <button type='submit' className='DeleteTodoForm__submitButton'>
