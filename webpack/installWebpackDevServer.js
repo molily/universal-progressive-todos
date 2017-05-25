@@ -10,7 +10,8 @@ export default (app) => {
     noInfo: true,
     publicPath: config.output.publicPath,
     watchOptions: {
-      aggregateTimeout: 100
+      aggregateTimeout: 100,
+      ignored: /node_modules/
     },
     // Minimize the output of webpack.
     // See https://github.com/webpack/docs/wiki/node.js-api#statstojsonoptions
