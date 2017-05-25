@@ -103,28 +103,11 @@ app.post(todoPathPattern, (req, res) => {
   }
 });
 
-// Get all todos
-/*
-app.get(todosPath, (req, res, next) => {
-  if (wantsJSON(req)) {
-    todosActions.getTodos(params, db).payload.then(
-      (todos) => {
-        res.json(todos);
-      },
-      onRejectedRenderError(res)
-    );
-  } else {
-    next();
-  }
-});
-*/
-
 // POST on the todos collection: Create a new to-do
 app.post(todosPath, (req, res) => {
   const todo = bodyToTodo(req.body);
-  const id = uuid.v4();
   // Add id
-  todo.id = id;
+  todo.id = uuid.v4();
   todosActions.createTodo(todo, db).payload.then(
     () => {
       if (wantsJSON(req)) {

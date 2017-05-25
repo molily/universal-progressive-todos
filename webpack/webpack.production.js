@@ -1,5 +1,5 @@
 import webpack from 'webpack';
-import base from './base';
+import base from './webpack-base';
 
 export default {
   ...base,

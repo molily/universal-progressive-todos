@@ -1,4 +1,5 @@
 import React from 'react';
+/* eslint-disable react/no-array-index-key */
 import { Switch, Route, NavLink } from 'react-router-dom';
 import routes from '../routes';
 
@@ -20,9 +21,7 @@ export default () => (
     </nav>
     <Switch>
       {routes.map((route, index) =>
-        /* eslint-disable react/no-array-index-key */
         <Route key={index} {...route} />
-        /* eslint-enable react/no-array-index-key */
       )}
     </Switch>
   </div>
