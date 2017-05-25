@@ -15,12 +15,7 @@ export default {
         enforce: 'pre',
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader',
-        options: {
-          // Do not emit errors, it breaks hot loading of components.
-          emitError: false,
-          emitWarning: true
-        }
+        loader: 'eslint-loader'
       }
     ]
   },
