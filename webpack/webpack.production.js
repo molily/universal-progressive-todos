@@ -25,6 +25,7 @@ export default {
         comments: false,
         screw_ie8: true
       }
-    })
+    }),
+    new webpack.optimize.ModuleConcatenationPlugin()
   ]
 };
