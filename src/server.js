@@ -6,8 +6,9 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter, matchPath } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { todosPath, todoPathPattern, todoPath, todoInListPath }
-  from './utils/url';
+import {
+  todosPath, todoPathPattern, todoPath, todoInListPath
+} from './utils/url';
 import Database from './data/Database';
 import seedDatabase from './data/seedDatabase';
 import createStore from './store/createStore';
@@ -47,8 +48,7 @@ if (isProduction) {
 const db = new Database('./db-todos');
 seedDatabase(db);
 
-const wantsJSON = (req) =>
-  req.accepts('html', 'json') === 'json';
+const wantsJSON = (req) => req.accepts('html', 'json') === 'json';
 
 const renderServerError = (res, error) => {
   res.status(500).render('error', {
@@ -56,13 +56,12 @@ const renderServerError = (res, error) => {
   });
 };
 
-const bodyToTodo = (body) =>
-  ({
-    id: body.id,
-    text: body.text,
-    completed: body.completed === 'true',
-    editMode: body.editMode === 'true'
-  });
+const bodyToTodo = (body) => ({
+  id: body.id,
+  text: body.text,
+  completed: body.completed === 'true',
+  editMode: body.editMode === 'true'
+});
 
 // Creates a function that handles promise rejection
 // by rendering a server error.
@@ -87,6 +86,7 @@ const handlePostAction = (req, res, todo, promise) => {
 
 // POST on a individual to-do: Update or delete
 app.post(todoPathPattern, (req, res) => {
+  /* eslint-disable-next-line no-underscore-dangle */
   const method = req.body._method;
   if (method === 'PUT') {
     // Update
@@ -133,22 +133,24 @@ const matchUrl = (url) => {
 
 // Loads the data for the current route by calling the action creators
 // specified in the component needs. Returns a promise.
-const loadData = (url, route, params, store) => {
+const loadData = (_url, route, params, store) => {
   const needs = route.component.needs || [];
-  const promises = needs.map((need) =>
+  const promises = needs.map(
     // Dispatch action creators specified by the component needs
-    store.dispatch(need(params, db))
+    (need) => store.dispatch(need(params, db))
   );
   return Promise.all(promises);
 };
 
 const renderApp = (url, store) => {
   const context = {};
-  const element = <Provider store={store}>
-    <StaticRouter location={url} context={context}>
-      <App />
-    </StaticRouter>
-  </Provider>;
+  const element = (
+    <Provider store={store}>
+      <StaticRouter location={url} context={context}>
+        <App />
+      </StaticRouter>
+    </Provider>
+  );
   return renderToString(element);
 };
 

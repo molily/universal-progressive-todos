@@ -4,7 +4,9 @@ import todosPropType from './todosPropType';
 import TodoList from './TodoList';
 import CreateTodoForm from './CreateTodoForm';
 
-const CompletedTodos = ({ todos, updateTodo, deleteTodo, createTodo }) =>
+const CompletedTodos = ({
+  todos, updateTodo, deleteTodo, createTodo
+}) => (
   <main>
     <TodoList
       todos={todos.filter((todo) => todo.completed)}
@@ -12,7 +14,8 @@ const CompletedTodos = ({ todos, updateTodo, deleteTodo, createTodo }) =>
       deleteTodo={deleteTodo}
     />
     <CreateTodoForm createTodo={createTodo} />
-  </main>;
+  </main>
+);
 
 CompletedTodos.propTypes = {
   todos: todosPropType.isRequired,

@@ -1,4 +1,6 @@
 import levelup from 'levelup';
+import leveldown from 'leveldown';
+import encode from 'encoding-down';
 
 const promisify = (func, context, ...args) => {
   return new Promise((resolve, reject) => {
@@ -15,11 +17,10 @@ const promisify = (func, context, ...args) => {
 };
 
 export default class Database {
-
   constructor(filename) {
-    this.db = levelup(filename, {
+    this.db = levelup(encode(leveldown(filename), {
       valueEncoding: 'json'
-    });
+    }));
   }
 
   getAll() {
@@ -49,5 +50,4 @@ export default class Database {
   delete(key) {
     return promisify(this.db.del, this.db, key);
   }
-
 }
