@@ -1,32 +1,24 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
-        "targets": {
-          "browsers": "> 1%",
-          "uglify": true
-        }
+        "targets": "> 1%"
       }
     ],
-    "react"
+    "@babel/preset-react"
   ],
   "plugins": [
-    "transform-object-rest-spread",
-    "lodash",
-    [ "transform-react-jsx", { "pragma": "h" } ]
+    [ "@babel/plugin-transform-react-jsx", { "pragma": "h" } ]
   ],
   "env": {
     "production": {
       "plugins": [
-        "transform-react-constant-elements",
-        "transform-react-pure-class-to-function",
+        "@babel/plugin-transform-react-constant-elements",
         [
-          "transform-runtime",
+          "@babel/plugin-transform-runtime",
           {
-            "helpers": true,
-            "polyfill": false,
-            "regenerator": false
+            "regenerator": false,
           }
         ]
       ]

@@ -30,4 +30,3 @@ Then open [http://localhost:3333](http://localhost:3333) in your browser.
 ## Similar projects
 
 - [react-redux-universal-hot-example](https://github.com/erikras/react-redux-universal-hot-example) by Erik Rasmussen: More complete but way more complex example, also no emphasis on Progressive Enhancement
-

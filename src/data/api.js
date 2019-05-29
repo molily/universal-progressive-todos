@@ -1,10 +1,12 @@
+/* global XMLHttpRequest */
 import partial from '../utils/partial';
 import { todosPath, todoPath, todoIdFromPath } from '../utils/url';
 
 const jsonMime = 'application/json';
 
-const hasOwnProperty = (object, property) =>
-  Object.prototype.hasOwnProperty.call(object, property);
+const hasOwnProperty = (object, property) => (
+  Object.prototype.hasOwnProperty.call(object, property)
+);
 
 // Serializes an object to an application/x-www-form-urlencoded string
 const serialize = (object) => {
@@ -28,7 +30,7 @@ const serialize = (object) => {
 // Returns a promise that is resolved with the server response.
 const sendForm = (method, path, payload) => {
   return new Promise((resolve, reject) => {
-    const xhr = new window.XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.onload = () => {
       const { responseText } = xhr;
       let response = responseText;
@@ -69,20 +71,18 @@ const sendForm = (method, path, payload) => {
 
 export const fetchTodos = partial(sendForm, 'GET', todosPath);
 
-export const updateTodo = (todo) =>
-  sendForm('PUT', todoPath(todo), todo);
+export const updateTodo = (todo) => sendForm('PUT', todoPath(todo), todo);
 
-export const deleteTodo = (todo) =>
-  sendForm('DELETE', todoPath(todo));
+export const deleteTodo = (todo) => sendForm('DELETE', todoPath(todo));
 
 // Creates a new to-do on the server, returns a promise for the to-do
 // with the new ID.
-export const createTodo = (todo) => {
-  return sendForm('POST', todosPath, todo).then(
+export const createTodo = (todo) => (
+  sendForm('POST', todosPath, todo).then(
     (locationHeader) => ({
       ...todo,
       // Extract the new ID
       id: todoIdFromPath(locationHeader)
     })
-  );
-};
+  )
+);

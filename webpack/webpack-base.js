@@ -7,10 +7,10 @@ const entry = path.resolve(baseDir, 'src', filename);
 const outputPath = path.resolve(baseDir, 'dist', destDir);
 
 export default {
-  entry: entry,
+  entry,
   output: {
     path: outputPath,
-    filename: filename,
+    filename,
     publicPath: `/${destDir}/`,
     devtoolModuleFilenameTemplate: '[resource-path]'
   },

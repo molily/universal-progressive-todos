@@ -3,7 +3,7 @@ import base from './webpack-base';
 
 export default {
   ...base,
-  devtool: 'eval',
+  mode: 'development',
   entry: [
     'webpack-hot-middleware/client?reload=true&noInfo=true',
     base.entry

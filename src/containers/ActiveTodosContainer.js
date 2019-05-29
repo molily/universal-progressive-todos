@@ -1,11 +1,10 @@
-import _ from 'lodash';
 import { connect } from 'react-redux';
 import ActiveTodos from '../components/ActiveTodos';
 import * as todosActions from '../actions/todosActions';
 
 const ActiveTodosContainer = connect(
   // mapStateToProps
-  _.identity,
+  (state) => state,
   // mapDispatchToProps
   todosActions
 )(ActiveTodos);

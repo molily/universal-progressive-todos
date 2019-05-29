@@ -10,7 +10,7 @@ html {
 }
 
 body {
-  margin: 1rem;
+  margin: $std-padding;
 }
 
 input, button {
@@ -37,6 +37,7 @@ button {
 .inline-form {
   display: inline-block;
   vertical-align: top;
+  margin-left: $std-padding-half;
 }
 
 .nav__list {
@@ -47,6 +48,12 @@ button {
 .nav__item {
   list-style-type: none;
   padding-right: 1rem;
+}
+
+.nav__link.active {
+  font-weight: bold;
+  text-decoration: none;
+  color: inherit;
 }
 
 .todos {
@@ -72,30 +79,13 @@ button {
   text-decoration: line-through;
 }
 
-.todo__leftControls {
-  padding-right: $std-padding;
-  order: 1;
-}
-
 .todo__body {
-  flex: 1;
-  order: 2;
-  padding-right: $std-padding;
-}
-
-.todo__rightControls {
-  order: 3;
-  width: 180px;
-  text-align: center;
+  flex: 1 1 auto;
+  padding-right: $std-padding-half;
 }
 
 .CreateTodoForm__label,
 .CreateTodoForm__input {
-  margin-right: $std-padding-half;
-}
-
-.StartEditTodoForm {
-  display: inline-block;
   margin-right: $std-padding-half;
 }
 

@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import { h } from 'preact';
 import { Switch, Route, NavLink } from 'react-router-dom';
 import routes from '../routes';
@@ -9,20 +8,18 @@ export default () => (
     <nav className='nav'>
       <ul className='nav__list'>
         <li className='nav__item'>
-          <NavLink to='/'>All</NavLink>
+          <NavLink to='/' exact className='nav__link'>All</NavLink>
         </li>
         <li className='nav__item'>
-          <NavLink to='/active'>Active</NavLink>
+          <NavLink to='/active' className='nav__link'>Active</NavLink>
         </li>
         <li className='nav__item'>
-          <NavLink to='/completed'>Completed</NavLink>
+          <NavLink to='/completed' className='nav__link'>Completed</NavLink>
         </li>
       </ul>
     </nav>
     <Switch>
-      {routes.map((route, index) =>
-        <Route key={index} {...route} />
-      )}
+      {routes.map((route) => <Route key={route.path} {...route} />)}
     </Switch>
   </div>
 );

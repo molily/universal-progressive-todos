@@ -1,6 +1,4 @@
 module.exports = {
-  parser: 'babel-eslint',
-
   // Build upon Airbnb JavaScript style guide
   // https://github.com/airbnb/javascript
   // https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb
@@ -19,12 +17,6 @@ module.exports = {
     window: false
   },
 
-  settings: {
-    react: {
-      pragma: 'h'
-    }
-  },
-
   // Override some rules in the Airbnb style guide to match
   // our setup and preferences.
   rules: {
@@ -37,10 +29,9 @@ module.exports = {
     // Disable rule
     // http://eslint.org/docs/rules/func-names
     'func-names': 'off',
-    // Enforce consistent linebreak style
-    // Disable rule since Git for Windows converts CRLF to LF automatically
-    // http://eslint.org/docs/rules/linebreak-style
-    'linebreak-style': 'off',
+    // Allow ++ operator
+    // https://eslint.org/docs/rules/no-plusplus
+    'no-plusplus': 'off',
 
     // Disallow certain syntax forms
     // Allow ForInStatement
@@ -53,26 +44,23 @@ module.exports = {
 
     // React / JSX
     // -----------
-
-    // The following rules overwrite the AirBnB rules for React:
+    //
+    // The following rules overwrite the AirBnB rules for React / JSX:
     // https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb/rules/react.js
 
-    // Enforce quote style for JSX attributes
-    // <p title='foo'>, not <p title="foo">
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-quotes.md
-    'jsx-quotes': [ 'error', 'prefer-single' ],
+    // In JSX, prefer single quotes
+    // https://eslint.org/docs/rules/jsx-quotes
+    'jsx-quotes': [ 'warn', 'prefer-single' ],
+
     // Restrict file extensions that may contain JSX
     // Disable rule since we’re using .js instead of .jsx
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md
     'react/jsx-filename-extension': 'off',
-    // Prevent missing parentheses around multilines JSX
-    // Disable rule to allow for `const hello = <div>\n</div>;`
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-wrap-multilines.md
-    'react/jsx-wrap-multilines': 'off',
-    // Enforce label tags have htmlFor attribute.
-    // Disable rule since <label><input /></label> is fine
-    // https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/label-has-for.md
-    'jsx-a11y/label-has-for': 'off',
+
+    // Prevent missing React when using JSX
+    // Disable since it does not make sense for Preact
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/react-in-jsx-scope.md
+    'react/react-in-jsx-scope': 'off',
 
     // Stylistic rules
     // ---------------
@@ -88,11 +76,6 @@ module.exports = {
     // (a) => {}, not a => {}
     // http://eslint.org/docs/rules/arrow-parens
     'arrow-parens': [ 'error', 'always' ],
-    // Enforce Function Style
-    // Function expressions, not declarations
-    // f = () => {} or f = function() {}, not function f() {}
-    // http://eslint.org/docs/rules/func-style
-    'func-style': [ 'error', 'expression', { allowArrowFunctions: true } ],
     // Require braces in arrow function body
     // Disable rule to allow for () => {} and () => { return () => {} }
     // http://eslint.org/docs/rules/arrow-body-style.html

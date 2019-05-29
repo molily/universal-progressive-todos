@@ -1,37 +1,34 @@
-import _ from 'lodash';
 import { h } from 'preact';
 import PropTypes from 'prop-types';
 import todoPropType from './todoPropType';
 import { todoPath } from '../utils/url';
 
-const isEditingField = (fields, field) =>
-  fields.indexOf(field) !== -1;
+const isEditingField = (fields, field) => fields.indexOf(field) !== -1;
 
-const UpdateTodoForm = ({ children, todo, fields, onSubmit }) => {
-  const isEditing = _.partial(isEditingField, fields);
-  const completedField = !isEditing('completed') ?
-    <input type='hidden' name='completed' value={String(todo.completed)} /> :
-    undefined;
-  const textField = !isEditing('text') ?
-    <input type='hidden' name='text' value={todo.text} /> :
-    undefined;
-  const editModeField = !isEditing('editMode') ?
-    <input type='hidden' name='editMode' value={String(todo.editMode)} /> :
-    undefined;
+const UpdateTodoForm = ({
+  children, todo, fields, onSubmit
+}) => {
+  const makeHiddenField = (field) => (
+    isEditingField(fields, field)
+      ? undefined
+      : <input type='hidden' name={field} value={String(todo[field])} />
+  );
 
-  return <form
-    action={todoPath(todo)}
-    method='post'
-    onSubmit={onSubmit}
-    className='inline-form'
-  >
-    <input type='hidden' name='_method' value='PUT' />
-    <input type='hidden' name='id' value={todo.id} />
-    {textField}
-    {completedField}
-    {editModeField}
-    {children}
-  </form>;
+  return (
+    <form
+      action={todoPath(todo)}
+      method='post'
+      onSubmit={onSubmit}
+      className='inline-form'
+    >
+      <input type='hidden' name='_method' value='PUT' />
+      <input type='hidden' name='id' value={todo.id} />
+      {makeHiddenField('text')}
+      {makeHiddenField('completed')}
+      {makeHiddenField('editMode')}
+      {children}
+    </form>
+  );
 };
 
 UpdateTodoForm.defaultProps = {

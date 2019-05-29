@@ -1,33 +1,31 @@
-/* eslint-disable react/no-unused-prop-types, jsx-a11y/accessible-emoji */
-import _ from 'lodash';
 import { h } from 'preact';
 import PropTypes from 'prop-types';
 import todoPropType from './todoPropType';
 import { todoPath } from '../utils/url';
 
-const onSubmit = (props, event) => {
-  const { todo } = props;
-  /* eslint-disable no-alert */
+const onSubmit = (todo, deleteTodo, event) => {
+  /* eslint-disable-next-line no-alert */
   if (window.confirm(`Really delete this todo?\n${todo.text}`)) {
-    props.deleteTodo(props.todo);
+    deleteTodo(todo);
   }
-  /* eslint-enable no-alert */
   event.preventDefault();
 };
 
-const DeleteTodoForm = (props) =>
+const DeleteTodoForm = ({ todo, deleteTodo }) => (
   <form
-    action={todoPath(props.todo)}
+    action={todoPath(todo)}
     method='post'
-    onSubmit={_.partial(onSubmit, props)}
+    onSubmit={(event) => onSubmit(todo, deleteTodo, event)}
     className='inline-form DeleteTodoForm'
   >
     <input type='hidden' name='_method' value='DELETE' />
-    <input type='hidden' name='id' value={props.todo.id} />
+    <input type='hidden' name='id' value={todo.id} />
     <button type='submit' className='DeleteTodoForm__submitButton'>
-      ❌ Delete
+      <span role='img' aria-label=''>❌ </span>
+      Delete
     </button>
-  </form>;
+  </form>
+);
 
 DeleteTodoForm.propTypes = {
   todo: todoPropType.isRequired,

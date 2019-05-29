@@ -1,17 +1,15 @@
 import webpack from 'webpack';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import base from './webpack-base';
 
 export default {
   ...base,
-  devtool: 'source-map',
+  mode: 'production',
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    }),
-    new webpack.optimize.UglifyJsPlugin({
+    new UglifyJsPlugin({
       sourceMap: true,
       compress: {
         warnings: false,
