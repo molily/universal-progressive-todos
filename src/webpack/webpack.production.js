@@ -11,18 +11,7 @@ export default {
     }),
     new UglifyJsPlugin({
       sourceMap: true,
-      compress: {
-        warnings: false,
-        // React doesn’t support IE 8 anyway, so no IE 8 support needed
-        screw_ie8: true
-      },
-      mangle: {
-        screw_ie8: true
-      },
-      output: {
-        comments: false,
-        screw_ie8: true
-      }
+      parallel: true
     }),
     new webpack.optimize.ModuleConcatenationPlugin()
   ]

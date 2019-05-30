@@ -1,5 +1,6 @@
+/** @jsx h */
 import { h } from 'preact';
-import { Component } from 'preact-compat';
+import { PureComponent } from 'preact/compat';
 import PropTypes from 'prop-types';
 import todoPropType from './todoPropType';
 import UpdateTodoForm from './UpdateTodoForm';

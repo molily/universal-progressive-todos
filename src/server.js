@@ -1,7 +1,7 @@
+/** @jsx h */
 // Enable aliasing to satisfy react-redux’ and react-router’s
 // dependencies on react
 import 'module-alias/register';
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
@@ -16,8 +16,8 @@ import {
 import Database from './data/Database';
 import seedDatabase from './data/seedDatabase';
 import createStore from './store/createStore';
-import * as todosActions from './actions/todosActions';
-import installWebpackDevServer from '../webpack/installWebpackDevServer';
+import { createTodo, deleteTodo } from './actions/todosActions';
+import installWebpackDevServer from './webpack/installWebpackDevServer';
 import App from './components/App';
 import routes from './routes';
 
@@ -95,12 +95,12 @@ app.post(todoPathPattern, (req, res) => {
   if (method === 'PUT') {
     // Update
     const todo = bodyToTodo(req.body);
-    const promise = todosActions.createTodo(todo, db).payload;
+    const promise = createTodo(todo, db).payload;
     handlePostAction(req, res, todo, promise);
   } else if (method === 'DELETE') {
     // Delete
     const todo = { id: req.params.id };
-    const promise = todosActions.deleteTodo(todo, db).payload;
+    const promise = deleteTodo(todo, db).payload;
     handlePostAction(req, res, todo, promise);
   } else {
     res.status(400).send('Invalid request');
@@ -112,7 +112,7 @@ app.post(todosPath, (req, res) => {
   const todo = bodyToTodo(req.body);
   // Add id
   todo.id = uuid.v4();
-  todosActions.createTodo(todo, db).payload.then(
+  createTodo(todo, db).payload.then(
     () => {
       if (wantsJSON(req)) {
         res.status(201).location(todoPath(todo)).end();
@@ -191,6 +191,6 @@ app.listen(port, networkInterface, (error) => {
     return;
   }
   // Clear screen
-  process.stdout.write('\u001B[2J\u001B[0f');
+  // process.stdout.write('\u001B[2J\u001B[0f');
   console.log(`Server running at http://${networkInterface}:${port}`);
 });

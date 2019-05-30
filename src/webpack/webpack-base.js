@@ -2,9 +2,8 @@ import path from 'path';
 
 const filename = 'client.js';
 const destDir = 'static';
-const baseDir = path.resolve(__dirname, '..');
-const entry = path.resolve(baseDir, 'src', filename);
-const outputPath = path.resolve(baseDir, 'dist', destDir);
+const entry = path.resolve(__dirname, '..', filename);
+const outputPath = path.resolve(__dirname, '..', '..', 'dist', destDir);
 
 export default {
   entry,
@@ -16,8 +15,8 @@ export default {
   },
   resolve: {
     alias: {
-      react: 'preact-compat',
-      'react-dom': 'preact-compat'
+      react: 'preact/compat',
+      'react-dom': 'preact/compat'
     }
   },
   module: {

@@ -1,3 +1,4 @@
+/** @jsx h */
 import { h } from 'preact';
 import { Switch, Route, NavLink } from 'react-router-dom';
 import routes from '../routes';
