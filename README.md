@@ -21,8 +21,8 @@ I think the key is to have the data loading logic in one place, or to have a hig
 ## Starting the server
 
 ```
-$ yarn install
-$ yarn start
+$ npm install
+$ npm start
 ```
 
 Then open [http://localhost:3333](http://localhost:3333) in your browser.
@@ -30,4 +30,3 @@ Then open [http://localhost:3333](http://localhost:3333) in your browser.
 ## Similar projects
 
 - [react-redux-universal-hot-example](https://github.com/erikras/react-redux-universal-hot-example) by Erik Rasmussen: More complete but way more complex example, also no emphasis on Progressive Enhancement
-

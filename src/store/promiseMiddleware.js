@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Milo Mordaunt, MIT-licensed
-// Source: https://github.com/bananaoomarang/isomorphic-redux/blob/master/shared/lib/promiseMiddleware.js // eslint-disable-line
+// Source: https://github.com/bananaoomarang/isomorphic-redux/blob/master/shared/lib/promiseMiddleware.js
 // Changed to emit Flux Standard Actions
 
 const isPromise = (obj) => obj && typeof obj.then === 'function';
