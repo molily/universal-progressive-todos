@@ -4,6 +4,7 @@ import base from './webpack-base';
 export default {
   ...base,
   mode: 'development',
+  devtool: 'cheap-eval-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true&noInfo=true',
     base.entry
@@ -20,9 +21,6 @@ export default {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"development"'
-    }),
     new webpack.HotModuleReplacementPlugin()
   ]
 };
