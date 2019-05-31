@@ -8,9 +8,10 @@ There are several good example apps and boilerplates for universal React/Preact 
 
 What’s special about this example is that it’s made with **Progressive Enhancement** in mind. Instead of just rendering the first page on the server to improve the Javascript application’s startup time, this example works entirely when [JavaScript is disabled or fails for any reason](http://kryogenix.org/code/browser/everyonehasjs.html). See my recent articles for background information:
 
-* [Interaction is Key: Progressive Enhancement and JavaScript](http://molily.de/interaction-is-key/)
-* [Progressive enhancement for JavaScript web apps](http://molily.de/single-page-apps/)
-* [Progressive enhancement and JavaScript failure](http://molily.de/javascript-failure/)
+* [Interaction is Key: Progressive Enhancement and JavaScript](https://molily.de/interaction-is-key/)
+* [Progressive enhancement for JavaScript web apps](https://molily.de/single-page-apps/)
+* [Progressive enhancement and JavaScript failure](https://molily.de/javascript-failure/)
+* [Robust Client-Side JavaScript – A Developer’s Guide](https://molily.de/robust-javascript/)
 
 The interesting difference between the numerous universal React/Preact examples is the data fetching and the server communication. This example follows Milo Mordaunt’s approach. It declares the data dependencies in the React/Preact component. The static component property `needs` lists Redux action creators.
 
