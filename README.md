@@ -19,7 +19,9 @@ These [action creators](https://github.com/molily/universal-progressive-todos/bl
 
 I think the key is to have the data loading logic in one place, or to have a high-level wrapper like [Relay](https://facebook.github.io/relay/), [Transmit](https://github.com/RickWong/react-transmit) or [Falcor](http://www.mattgreer.org/articles/server-side-react-and-falcor/) for managing data dependencies.
 
-## Starting the server
+## Development server
+
+Start the development server with:
 
 ```
 $ npm install
@@ -27,6 +29,20 @@ $ npm start
 ```
 
 Then open [http://localhost:3333](http://localhost:3333) in your browser.
+
+## Production server
+
+Make a client and server production build:
+
+````
+$ npm run build
+```
+
+Start the server with:
+
+```
+$ npm run server:production
+```
 
 ## Similar projects
 
