@@ -25,6 +25,8 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 const app = express();
 
+app.disable('x-powered-by');
+
 app.set('query parser', 'simple');
 
 app.set('views', './src/');
@@ -32,7 +34,7 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static('dist'));
+app.use(express.static('dist/client'));
 
 // Install Webpack development server
 if (isDevelopment) {
@@ -187,6 +189,5 @@ app.listen(port, networkInterface, (error) => {
     return;
   }
   // Clear screen
-  // process.stdout.write('\u001B[2J\u001B[0f');
   console.log(`Server running at http://${networkInterface}:${port}`);
 });

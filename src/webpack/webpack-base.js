@@ -3,7 +3,9 @@ import path from 'path';
 const filename = 'client.js';
 const destDir = 'static';
 const entry = path.resolve(__dirname, '..', filename);
-const outputPath = path.resolve(__dirname, '..', '..', 'dist', destDir);
+const outputPath = path.resolve(
+  __dirname, '..', '..', 'dist', 'client', destDir
+);
 
 export default {
   entry,
