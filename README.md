@@ -34,7 +34,7 @@ Then open [http://localhost:3333](http://localhost:3333) in your browser.
 
 Make a client and server production build:
 
-````
+```
 $ npm run build
 ```
 
