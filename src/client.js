@@ -1,6 +1,5 @@
 /** @jsx h */
-import { h } from 'preact';
-import { render } from 'preact/compat';
+import { h, render } from 'preact';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import createStore from './store/createStore';
