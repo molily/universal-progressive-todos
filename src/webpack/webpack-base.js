@@ -29,5 +29,8 @@ export default {
         loader: 'babel-loader'
       }
     ]
+  },
+  optimization: {
+    minimize: false
   }
 };
