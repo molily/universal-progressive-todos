@@ -20,7 +20,14 @@ export default () => (
       </ul>
     </nav>
     <Switch>
-      {routes.map((route) => <Route key={route.path} {...route} />)}
+      {routes.map((route) => (
+        <Route
+          key={route.path}
+          path={route.path}
+          exact={route.exact}
+          component={route.component}
+        />
+      ))}
     </Switch>
   </div>
 );
