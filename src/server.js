@@ -81,7 +81,7 @@ const handlePostAction = (req, res, todo, promise) => {
   promise.then(
     () => {
       if (wantsJSON(req)) {
-        res.status(200).end();
+        res.sendStatus(200).end();
       } else {
         res.redirect(todoInListPath(todo));
       }
@@ -105,7 +105,7 @@ app.post(todoPathPattern, (req, res) => {
     const promise = deleteTodo(todo, db).payload;
     handlePostAction(req, res, todo, promise);
   } else {
-    res.status(400).send('Invalid request');
+    res.sendStatus(400);
   }
 });
 
