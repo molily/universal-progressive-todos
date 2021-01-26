@@ -4,21 +4,14 @@ import { todosPath, todoPath, todoIdFromPath } from '../utils/url';
 
 const jsonMime = 'application/json';
 
-const hasOwnProperty = (object, property) => (
-  Object.prototype.hasOwnProperty.call(object, property)
-);
-
 // Serializes an object to an application/x-www-form-urlencoded string
 const serialize = (object) => {
   const pairs = [];
-  for (const property in object) {
-    if (hasOwnProperty(object, property)) {
-      const value = object[property];
-      const encodedProperty = encodeURIComponent(property);
-      const encodedValue = encodeURIComponent(value);
-      pairs.push(`${encodedProperty}=${encodedValue}`);
-    }
-  }
+  Object.entries(object).forEach(([property, value]) => {
+    const encodedProperty = encodeURIComponent(property);
+    const encodedValue = encodeURIComponent(value);
+    pairs.push(`${encodedProperty}=${encodedValue}`);
+  });
   return pairs.join('&');
 };
 
@@ -28,8 +21,9 @@ const serialize = (object) => {
 // with an additional _method parameter.
 // Note, this is not a generic Ajax function.
 // Returns a promise that is resolved with the server response.
-const sendForm = (method, path, payload) => {
-  return new Promise((resolve, reject) => {
+const sendForm = (method, path, payload) =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.onload = () => {
       const { responseText } = xhr;
@@ -56,18 +50,18 @@ const sendForm = (method, path, payload) => {
     let postBody;
     if (payload || emulateMethod) {
       xhr.setRequestHeader(
-        'Content-Type', 'application/x-www-form-urlencoded; charset=utf-8'
+        'Content-Type',
+        'application/x-www-form-urlencoded; charset=utf-8',
       );
       // Transmit the original method in the body
       const eventualPayload = {
         ...payload,
-        _method: method
+        _method: method,
       };
       postBody = serialize(eventualPayload);
     }
     xhr.send(postBody);
   });
-};
 
 export const fetchTodos = partial(sendForm, 'GET', todosPath);
 
@@ -77,12 +71,10 @@ export const deleteTodo = (todo) => sendForm('DELETE', todoPath(todo));
 
 // Creates a new to-do on the server, returns a promise for the to-do
 // with the new ID.
-export const createTodo = (todo) => (
-  sendForm('POST', todosPath, todo).then(
-    (locationHeader) => ({
-      ...todo,
-      // Extract the new ID
-      id: todoIdFromPath(locationHeader)
-    })
-  )
-);
+export const createTodo = (todo) =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  sendForm('POST', todosPath, todo).then((locationHeader) => ({
+    ...todo,
+    // Extract the new ID
+    id: todoIdFromPath(locationHeader),
+  }));

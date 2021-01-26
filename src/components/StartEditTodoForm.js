@@ -12,23 +12,21 @@ const onSubmit = (newTodo, updateTodo, event) => {
 const StartEditTodoForm = ({ todo, updateTodo }) => {
   const newTodo = {
     ...todo,
-    editMode: true
+    editMode: true,
   };
   return (
     <UpdateTodoForm
       todo={newTodo}
       onSubmit={(event) => onSubmit(newTodo, updateTodo, event)}
     >
-      <button type='submit'>
-        ✎ Edit
-      </button>
+      <button type='submit'>✎ Edit</button>
     </UpdateTodoForm>
   );
 };
 
 StartEditTodoForm.propTypes = {
   todo: todoPropType.isRequired,
-  updateTodo: PropTypes.func.isRequired
+  updateTodo: PropTypes.func.isRequired,
 };
 
 export default StartEditTodoForm;

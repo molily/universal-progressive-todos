@@ -9,13 +9,19 @@ export default () => (
     <nav className='nav'>
       <ul className='nav__list'>
         <li className='nav__item'>
-          <NavLink to='/' exact className='nav__link'>All</NavLink>
+          <NavLink to='/' exact className='nav__link'>
+            All
+          </NavLink>
         </li>
         <li className='nav__item'>
-          <NavLink to='/active' className='nav__link'>Active</NavLink>
+          <NavLink to='/active' className='nav__link'>
+            Active
+          </NavLink>
         </li>
         <li className='nav__item'>
-          <NavLink to='/completed' className='nav__link'>Completed</NavLink>
+          <NavLink to='/completed' className='nav__link'>
+            Completed
+          </NavLink>
         </li>
       </ul>
     </nav>

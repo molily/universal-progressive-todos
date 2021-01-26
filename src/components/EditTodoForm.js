@@ -25,7 +25,7 @@ export default class EditTodoForm extends PureComponent {
     updateTodo({
       ...todo,
       text,
-      editMode: false
+      editMode: false,
     });
     event.preventDefault();
   }
@@ -39,19 +39,17 @@ export default class EditTodoForm extends PureComponent {
     const { todo } = this.props;
     const newTodo = {
       ...todo,
-      editMode: false
+      editMode: false,
     };
-    const fields = [ 'text' ];
+    const fields = ['text'];
     return (
-      <UpdateTodoForm
-        todo={newTodo}
-        fields={fields}
-        onSubmit={this.onSubmit}
-      >
+      <UpdateTodoForm todo={newTodo} fields={fields} onSubmit={this.onSubmit}>
         <label htmlFor='EditTodoForm__input'>
           <span className='accessible-hidden'>Edit todo:</span>
           <input
-            ref={(input) => { this.refInput = input; }}
+            ref={(input) => {
+              this.refInput = input;
+            }}
             type='text'
             name='text'
             defaultValue={newTodo.text}
@@ -61,7 +59,10 @@ export default class EditTodoForm extends PureComponent {
           />
         </label>
         <button type='submit' className='EditTodoForm__submitButton'>
-          <span role='img' aria-label=''>💾 </span>
+          <span role='img' aria-label=''>
+            💾
+            {' '}
+          </span>
           Save
         </button>
       </UpdateTodoForm>
@@ -71,5 +72,5 @@ export default class EditTodoForm extends PureComponent {
 
 EditTodoForm.propTypes = {
   todo: todoPropType.isRequired,
-  updateTodo: PropTypes.func.isRequired
+  updateTodo: PropTypes.func.isRequired,
 };

@@ -6,14 +6,14 @@ export default [
   {
     path: '/',
     exact: true,
-    component: AllTodosContainer
+    component: AllTodosContainer,
   },
   {
     path: '/active',
-    component: ActiveTodosContainer
+    component: ActiveTodosContainer,
   },
   {
     path: '/completed',
-    component: CompletedTodosContainer
-  }
+    component: CompletedTodosContainer,
+  },
 ];

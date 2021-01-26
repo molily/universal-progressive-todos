@@ -9,9 +9,7 @@ const $ = (id) => window.document.getElementById(id);
 
 const initClient = () => {
   // Rehydrate Redux store state from server
-  const initialState = JSON.parse(
-    $('initialState').textContent
-  );
+  const initialState = JSON.parse($('initialState').textContent);
   // Create the Redux store
   const store = createStore(initialState);
   // Render component tree

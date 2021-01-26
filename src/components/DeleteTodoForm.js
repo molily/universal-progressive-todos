@@ -22,7 +22,10 @@ const DeleteTodoForm = ({ todo, deleteTodo }) => (
     <input type='hidden' name='_method' value='DELETE' />
     <input type='hidden' name='id' value={todo.id} />
     <button type='submit' className='DeleteTodoForm__submitButton'>
-      <span role='img' aria-label=''>❌ </span>
+      <span role='img' aria-label=''>
+        ❌
+        {' '}
+      </span>
       Delete
     </button>
   </form>
@@ -30,7 +33,7 @@ const DeleteTodoForm = ({ todo, deleteTodo }) => (
 
 DeleteTodoForm.propTypes = {
   todo: todoPropType.isRequired,
-  deleteTodo: PropTypes.func.isRequired
+  deleteTodo: PropTypes.func.isRequired,
 };
 
 export default DeleteTodoForm;

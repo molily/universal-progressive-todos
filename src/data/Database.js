@@ -2,31 +2,32 @@ import levelup from 'levelup';
 import leveldown from 'leveldown';
 import encode from 'encoding-down';
 
-const promisify = (func, context, ...args) => {
-  return new Promise((resolve, reject) => {
-    const callback = (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    };
-    const argsWithCallback = [ ...args, callback ];
-    func.apply(context, argsWithCallback);
-  });
-};
+const promisify = (func, context, ...args) => new Promise((resolve, reject) => {
+  const callback = (err, result) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(result);
+    }
+  };
+  const argsWithCallback = [...args, callback];
+  func.apply(context, argsWithCallback);
+});
 
 export default class Database {
   constructor(filename) {
-    this.db = levelup(encode(leveldown(filename), {
-      valueEncoding: 'json'
-    }));
+    this.db = levelup(
+      encode(leveldown(filename), {
+        valueEncoding: 'json',
+      }),
+    );
   }
 
   getAll() {
     const records = [];
     return new Promise((resolve, reject) => {
-      this.db.createReadStream()
+      this.db
+        .createReadStream()
         .on('data', (data) => {
           records.push({ ...data.value, id: data.key });
         })

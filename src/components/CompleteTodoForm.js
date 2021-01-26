@@ -12,7 +12,7 @@ const onSubmit = (newTodo, updateTodo, event) => {
 const CompleteTodoForm = ({ todo, updateTodo }) => {
   const newTodo = {
     ...todo,
-    completed: !todo.completed
+    completed: !todo.completed,
   };
   return (
     <UpdateTodoForm
@@ -31,7 +31,7 @@ const CompleteTodoForm = ({ todo, updateTodo }) => {
 
 CompleteTodoForm.propTypes = {
   todo: todoPropType.isRequired,
-  updateTodo: PropTypes.func.isRequired
+  updateTodo: PropTypes.func.isRequired,
 };
 
 export default CompleteTodoForm;

@@ -6,11 +6,9 @@ const ActiveTodosContainer = connect(
   // mapStateToProps
   (state) => state,
   // mapDispatchToProps
-  todosActions
+  todosActions,
 )(ActiveTodos);
 
-ActiveTodosContainer.needs = [
-  todosActions.getTodos
-];
+ActiveTodosContainer.needs = [todosActions.getTodos];
 
 export default ActiveTodosContainer;

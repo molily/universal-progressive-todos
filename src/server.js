@@ -5,13 +5,16 @@ import 'module-alias/register';
 import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { h } from 'preact';
 import renderToString from 'preact-render-to-string';
 import { StaticRouter, matchPath } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import {
-  todosPath, todoPathPattern, todoPath, todoInListPath
+  todosPath,
+  todoPathPattern,
+  todoPath,
+  todoInListPath,
 } from './utils/url';
 import Database from './data/Database';
 import seedDatabase from './data/seedDatabase';
@@ -58,7 +61,7 @@ const wantsJSON = (req) => req.accepts('html', 'json') === 'json';
 
 const renderServerError = (res, error) => {
   res.status(500).render('error', {
-    error: isDevelopment ? error : null
+    error: isDevelopment ? error : null,
   });
 };
 
@@ -66,28 +69,23 @@ const bodyToTodo = (body) => ({
   id: body.id,
   text: body.text,
   completed: body.completed === 'true',
-  editMode: body.editMode === 'true'
+  editMode: body.editMode === 'true',
 });
 
 // Creates a function that handles promise rejection
 // by rendering a server error.
-const onRejectedRenderError = (res) => {
-  return (reason) => {
-    renderServerError(res, reason);
-  };
+const onRejectedRenderError = (res) => (reason) => {
+  renderServerError(res, reason);
 };
 
 const handlePostAction = (req, res, todo, promise) => {
-  promise.then(
-    () => {
-      if (wantsJSON(req)) {
-        res.sendStatus(200).end();
-      } else {
-        res.redirect(todoInListPath(todo));
-      }
-    },
-    onRejectedRenderError(res)
-  );
+  promise.then(() => {
+    if (wantsJSON(req)) {
+      res.sendStatus(200).end();
+    } else {
+      res.redirect(todoInListPath(todo));
+    }
+  }, onRejectedRenderError(res));
 };
 
 // POST on a individual to-do: Update or delete
@@ -113,17 +111,14 @@ app.post(todoPathPattern, (req, res) => {
 app.post(todosPath, (req, res) => {
   const todo = bodyToTodo(req.body);
   // Add id
-  todo.id = uuid.v4();
-  createTodo(todo, db).payload.then(
-    () => {
-      if (wantsJSON(req)) {
-        res.status(201).location(todoPath(todo)).end();
-      } else {
-        res.redirect(todoInListPath(todo));
-      }
-    },
-    onRejectedRenderError(res)
-  );
+  todo.id = uuidv4();
+  createTodo(todo, db).payload.then(() => {
+    if (wantsJSON(req)) {
+      res.status(201).location(todoPath(todo)).end();
+    } else {
+      res.redirect(todoInListPath(todo));
+    }
+  }, onRejectedRenderError(res));
 });
 
 const matchUrl = (url) => {
@@ -143,7 +138,7 @@ const loadData = (_url, route, params, store) => {
   const needs = route.component.needs || [];
   const promises = needs.map(
     // Dispatch action creators specified by the component needs
-    (need) => store.dispatch(need(params, db))
+    (need) => store.dispatch(need(params, db)),
   );
   return Promise.all(promises);
 };
@@ -176,7 +171,7 @@ app.get('*', (req, res) => {
           title: 'Todo list',
           content: html,
           // Hydrate Redux store state
-          initialState: JSON.stringify(store.getState())
+          initialState: JSON.stringify(store.getState()),
         });
       })
       // Catch errors when loading data or rendering the app
@@ -186,12 +181,13 @@ app.get('*', (req, res) => {
   }
 });
 
-
 app.listen(port, networkInterface, (error) => {
   if (error) {
+    // eslint-disable-next-line no-console
     console.error(error);
     return;
   }
   // Clear screen
+  // eslint-disable-next-line no-console
   console.log(`Server running at http://${networkInterface}:${port}`);
 });

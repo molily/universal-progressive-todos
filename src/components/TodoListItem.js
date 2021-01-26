@@ -17,18 +17,18 @@ const TodoListItem = (props) => {
   const { todo, updateTodo, deleteTodo } = props;
   const className = classNames(
     'todo',
-    todo.completed ? 'todo--completed' : 'todo--active'
+    todo.completed ? 'todo--completed' : 'todo--active',
   );
-  const body = todo.editMode
-    ? <EditTodoForm todo={todo} updateTodo={updateTodo} />
-    : (
-      <span
-        className='todo__text'
-        onDoubleClick={() => startEditTodo(todo, updateTodo)}
-      >
-        {todo.text}
-      </span>
-    );
+  const body = todo.editMode ? (
+    <EditTodoForm todo={todo} updateTodo={updateTodo} />
+  ) : (
+    <span
+      className='todo__text'
+      onDoubleClick={() => startEditTodo(todo, updateTodo)}
+    >
+      {todo.text}
+    </span>
+  );
   const accessibleLabel = todo.completed ? 'Done:' : 'Todo:';
   return (
     <li key={todo.id} id={`todo-${todo.id}`} className={className}>
@@ -46,7 +46,7 @@ const TodoListItem = (props) => {
 TodoListItem.propTypes = {
   todo: todoPropType.isRequired,
   updateTodo: PropTypes.func.isRequired,
-  deleteTodo: PropTypes.func.isRequired
+  deleteTodo: PropTypes.func.isRequired,
 };
 
 export default TodoListItem;

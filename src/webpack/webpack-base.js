@@ -4,7 +4,12 @@ const filename = 'client.js';
 const destDir = 'static';
 const entry = path.resolve(__dirname, '..', filename);
 const outputPath = path.resolve(
-  __dirname, '..', '..', 'dist', 'client', destDir
+  __dirname,
+  '..',
+  '..',
+  'dist',
+  'client',
+  destDir,
 );
 
 export default {
@@ -13,21 +18,21 @@ export default {
     path: outputPath,
     filename,
     publicPath: `/${destDir}/`,
-    devtoolModuleFilenameTemplate: '[resource-path]'
+    devtoolModuleFilenameTemplate: '[resource-path]',
   },
   resolve: {
     alias: {
       react: 'preact/compat',
-      'react-dom': 'preact/compat'
-    }
+      'react-dom': 'preact/compat',
+    },
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
-      }
-    ]
-  }
+        loader: 'babel-loader',
+      },
+    ],
+  },
 };

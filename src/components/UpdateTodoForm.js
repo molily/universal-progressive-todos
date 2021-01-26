@@ -6,14 +6,14 @@ import { todoPath } from '../utils/url';
 
 const isEditingField = (fields, field) => fields.indexOf(field) !== -1;
 
-const UpdateTodoForm = ({
-  children, todo, fields, onSubmit
-}) => {
-  const makeHiddenField = (field) => (
-    isEditingField(fields, field)
-      ? undefined
-      : <input type='hidden' name={field} value={String(todo[field])} />
-  );
+// eslint-disable-next-line object-curly-newline
+const UpdateTodoForm = ({ children, todo, fields, onSubmit }) => {
+  const makeHiddenField = (field) => {
+    if (isEditingField(fields, field)) {
+      return undefined;
+    }
+    return <input type='hidden' name={field} value={String(todo[field])} />;
+  };
 
   return (
     <form
@@ -33,7 +33,7 @@ const UpdateTodoForm = ({
 };
 
 UpdateTodoForm.defaultProps = {
-  fields: []
+  fields: [],
 };
 
 UpdateTodoForm.propTypes = {
@@ -41,7 +41,7 @@ UpdateTodoForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   todo: todoPropType.isRequired,
   // The fields being edited, inputs given in the children
-  fields: PropTypes.arrayOf(PropTypes.string)
+  fields: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default UpdateTodoForm;

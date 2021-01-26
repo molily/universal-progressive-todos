@@ -6,7 +6,7 @@ import TodoList from './TodoList';
 import CreateTodoForm from './CreateTodoForm';
 
 const CompletedTodos = ({
-  todos, updateTodo, deleteTodo, createTodo
+  todos, updateTodo, deleteTodo, createTodo,
 }) => (
   <main>
     <TodoList
@@ -22,7 +22,7 @@ CompletedTodos.propTypes = {
   todos: todosPropType.isRequired,
   updateTodo: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired,
-  createTodo: PropTypes.func.isRequired
+  createTodo: PropTypes.func.isRequired,
 };
 
 export default CompletedTodos;
