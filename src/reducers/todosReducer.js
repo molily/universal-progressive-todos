@@ -1,29 +1,34 @@
-import actionTypes from '../actions/actionTypes';
+import {
+  CREATE_TODO,
+  DELETE_TODO,
+  GET_TODOS,
+  UPDATE_TODO,
+} from '../actions/actionTypes';
 import createReducer from './createReducer';
 
 const initialState = [];
 
 const actionMap = {
-  [actionTypes.GET_TODOS](state, action) {
+  [GET_TODOS](_todos, action) {
     return action.payload;
   },
 
-  [actionTypes.CREATE_TODO](state, action) {
-    return state.concat(action.payload);
+  [CREATE_TODO](todos, action) {
+    return todos.concat(action.payload);
   },
 
-  [actionTypes.UPDATE_TODO](state, action) {
+  [UPDATE_TODO](todos, action) {
     const todo = action.payload;
     // Create a new array with the replaced todo
-    return state.reduce((result, otherTodo) => {
-      result.push(otherTodo.id === todo.id ? todo : otherTodo);
-      return result;
-    }, []);
+    return todos.map(
+      // Use existing or new todo
+      (otherTodo) => (otherTodo.id === todo.id ? todo : otherTodo),
+    );
   },
 
-  [actionTypes.DELETE_TODO](state, action) {
+  [DELETE_TODO](todos, action) {
     const { id } = action.payload;
-    return state.filter((otherTodo) => otherTodo.id !== id);
+    return todos.filter((otherTodo) => otherTodo.id !== id);
   },
 };
 

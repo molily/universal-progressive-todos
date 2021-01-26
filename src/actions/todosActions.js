@@ -1,11 +1,16 @@
-import actionTypes from './actionTypes';
+import {
+  CREATE_TODO,
+  DELETE_TODO,
+  GET_TODOS,
+  UPDATE_TODO,
+} from './actionTypes';
 import { isServer } from '../utils/universal';
 import * as api from '../data/api';
 
-export const getTodos = (params, db) => {
+export const getTodos = (_params, db) => {
   const promise = isServer ? db.getAll() : api.fetchTodos();
   return {
-    type: actionTypes.GET_TODOS,
+    type: GET_TODOS,
     payload: promise,
   };
 };
@@ -18,7 +23,7 @@ export const createTodo = (rawTodo, db) => {
   };
   const promise = isServer ? db.put(todo.id, todo) : api.createTodo(todo);
   return {
-    type: actionTypes.CREATE_TODO,
+    type: CREATE_TODO,
     payload: promise,
   };
 };
@@ -28,7 +33,7 @@ export const updateTodo = (todo, db) => {
     ? db.put(todo.id, todo)
     : api.updateTodo(todo).then(() => todo);
   return {
-    type: actionTypes.UPDATE_TODO,
+    type: UPDATE_TODO,
     payload: promise,
   };
 };
@@ -38,7 +43,7 @@ export const deleteTodo = (todo, db) => {
     ? db.delete(todo.id)
     : api.deleteTodo(todo).then(() => todo);
   return {
-    type: actionTypes.DELETE_TODO,
+    type: DELETE_TODO,
     payload,
   };
 };
