@@ -4,21 +4,14 @@ import { todosPath, todoPath, todoIdFromPath } from '../utils/url';
 
 const jsonMime = 'application/json';
 
-const hasOwnProperty = (object, property) => (
-  Object.prototype.hasOwnProperty.call(object, property)
-);
-
 // Serializes an object to an application/x-www-form-urlencoded string
 const serialize = (object) => {
   const pairs = [];
-  for (const property in object) {
-    if (hasOwnProperty(object, property)) {
-      const value = object[property];
-      const encodedProperty = encodeURIComponent(property);
-      const encodedValue = encodeURIComponent(value);
-      pairs.push(`${encodedProperty}=${encodedValue}`);
-    }
-  }
+  Object.entries(object).forEach(([property, value]) => {
+    const encodedProperty = encodeURIComponent(property);
+    const encodedValue = encodeURIComponent(value);
+    pairs.push(`${encodedProperty}=${encodedValue}`);
+  });
   return pairs.join('&');
 };
 
@@ -28,46 +21,45 @@ const serialize = (object) => {
 // with an additional _method parameter.
 // Note, this is not a generic Ajax function.
 // Returns a promise that is resolved with the server response.
-const sendForm = (method, path, payload) => {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = () => {
-      const { responseText } = xhr;
-      let response = responseText;
-      if (method === 'POST') {
-        // The response to POST is 201 Created, Location header, empty body.
-        // Use the Location header as result.
-        response = xhr.getResponseHeader('Location');
-      } else if (xhr.getResponseHeader('Content-Type') === jsonMime) {
-        // Parse JSON response body
-        response = JSON.parse(responseText);
-      }
-      resolve(response);
-    };
-    xhr.onerror = () => {
-      reject(new Error('XMLHttpRequest error'));
-    };
-    const emulateMethod = method === 'PUT' || method === 'DELETE';
-    const httpMethod = emulateMethod ? 'POST' : method;
-    xhr.open(httpMethod, path);
-    // We No Speak HTML
-    xhr.setRequestHeader('Accept', jsonMime);
-    // Create POST body
-    let postBody;
-    if (payload || emulateMethod) {
-      xhr.setRequestHeader(
-        'Content-Type', 'application/x-www-form-urlencoded; charset=utf-8'
-      );
-      // Transmit the original method in the body
-      const eventualPayload = {
-        ...payload,
-        _method: method
-      };
-      postBody = serialize(eventualPayload);
+const sendForm = (method, path, payload) => new Promise((resolve, reject) => {
+  const xhr = new XMLHttpRequest();
+  xhr.onload = () => {
+    const { responseText } = xhr;
+    let response = responseText;
+    if (method === 'POST') {
+      // The response to POST is 201 Created, Location header, empty body.
+      // Use the Location header as result.
+      response = xhr.getResponseHeader('Location');
+    } else if (xhr.getResponseHeader('Content-Type') === jsonMime) {
+      // Parse JSON response body
+      response = JSON.parse(responseText);
     }
-    xhr.send(postBody);
-  });
-};
+    resolve(response);
+  };
+  xhr.onerror = () => {
+    reject(new Error('XMLHttpRequest error'));
+  };
+  const emulateMethod = method === 'PUT' || method === 'DELETE';
+  const httpMethod = emulateMethod ? 'POST' : method;
+  xhr.open(httpMethod, path);
+  // We No Speak HTML
+  xhr.setRequestHeader('Accept', jsonMime);
+  // Create POST body
+  let postBody;
+  if (payload || emulateMethod) {
+    xhr.setRequestHeader(
+      'Content-Type',
+      'application/x-www-form-urlencoded; charset=utf-8',
+    );
+    // Transmit the original method in the body
+    const eventualPayload = {
+      ...payload,
+      _method: method,
+    };
+    postBody = serialize(eventualPayload);
+  }
+  xhr.send(postBody);
+});
 
 export const fetchTodos = partial(sendForm, 'GET', todosPath);
 
@@ -77,12 +69,10 @@ export const deleteTodo = (todo) => sendForm('DELETE', todoPath(todo));
 
 // Creates a new to-do on the server, returns a promise for the to-do
 // with the new ID.
-export const createTodo = (todo) => (
-  sendForm('POST', todosPath, todo).then(
-    (locationHeader) => ({
-      ...todo,
-      // Extract the new ID
-      id: todoIdFromPath(locationHeader)
-    })
-  )
-);
+export const createTodo = (todo) =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  sendForm('POST', todosPath, todo).then((locationHeader) => ({
+    ...todo,
+    // Extract the new ID
+    id: todoIdFromPath(locationHeader),
+  }));

@@ -6,11 +6,9 @@ const CompletedTodosContainer = connect(
   // mapStateToProps
   (state) => state,
   // mapDispatchToProps
-  todosActions
+  todosActions,
 )(CompletedTodos);
 
-CompletedTodosContainer.needs = [
-  todosActions.getTodos
-];
+CompletedTodosContainer.needs = [todosActions.getTodos];
 
 export default CompletedTodosContainer;

@@ -4,7 +4,6 @@ import createReducer from './createReducer';
 const initialState = [];
 
 const actionMap = {
-
   [actionTypes.GET_TODOS](state, action) {
     return action.payload;
   },
@@ -17,9 +16,7 @@ const actionMap = {
     const todo = action.payload;
     // Create a new array with the replaced todo
     return state.reduce((result, otherTodo) => {
-      result.push(
-        otherTodo.id === todo.id ? todo : otherTodo
-      );
+      result.push(otherTodo.id === todo.id ? todo : otherTodo);
       return result;
     }, []);
   },
@@ -27,8 +24,7 @@ const actionMap = {
   [actionTypes.DELETE_TODO](state, action) {
     const { id } = action.payload;
     return state.filter((otherTodo) => otherTodo.id !== id);
-  }
-
+  },
 };
 
 export default createReducer(initialState, actionMap);

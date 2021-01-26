@@ -36,7 +36,7 @@ const CreateTodoForm = ({ createTodo }) => (
 );
 
 CreateTodoForm.propTypes = {
-  createTodo: PropTypes.func.isRequired
+  createTodo: PropTypes.func.isRequired,
 };
 
 export default CreateTodoForm;
