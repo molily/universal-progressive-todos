@@ -2,27 +2,30 @@
 // Enable aliasing to satisfy react-redux’ and react-router’s
 // dependencies on react
 import 'module-alias/register';
-import express from 'express';
+
 import bodyParser from 'body-parser';
 import compression from 'compression';
-import { v4 as uuidv4 } from 'uuid';
+import express from 'express';
+// h is used indirectly by JSX
 import { h } from 'preact';
 import renderToString from 'preact-render-to-string';
-import { StaticRouter, matchPath } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {
-  todosPath,
-  todoPathPattern,
-  todoPath,
-  todoInListPath,
-} from './utils/url';
+import { matchPath, StaticRouter } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+
+import { createTodo, deleteTodo } from './actions/todosActions';
+import App from './components/App';
 import Database from './data/Database';
 import seedDatabase from './data/seedDatabase';
-import createStore from './store/createStore';
-import { createTodo, deleteTodo } from './actions/todosActions';
-import installWebpackDevServer from './webpack/installWebpackDevServer';
-import App from './components/App';
 import routes from './routes';
+import createStore from './store/createStore';
+import {
+  todoInListPath,
+  todoPath,
+  todoPathPattern,
+  todosPath,
+} from './utils/url';
+import installWebpackDevServer from './webpack/installWebpackDevServer';
 
 const networkInterface = '0.0.0.0';
 const port = 3333;
