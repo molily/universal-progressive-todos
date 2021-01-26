@@ -1,24 +1,25 @@
-import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
-import { v4 as uuidv4 } from 'uuid';
+import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter, matchPath } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {
-  todosPath,
-  todoPathPattern,
-  todoPath,
-  todoInListPath,
-} from './utils/url';
+import { matchPath, StaticRouter } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+
+import { createTodo, deleteTodo } from './actions/todosActions';
+import App from './components/App';
 import Database from './data/Database';
 import seedDatabase from './data/seedDatabase';
-import createStore from './store/createStore';
-import { createTodo, deleteTodo } from './actions/todosActions';
-import installWebpackDevServer from './webpack/installWebpackDevServer';
-import App from './components/App';
 import routes from './routes';
+import createStore from './store/createStore';
+import {
+  todoInListPath,
+  todoPath,
+  todoPathPattern,
+  todosPath,
+} from './utils/url';
+import installWebpackDevServer from './webpack/installWebpackDevServer';
 
 const networkInterface = '0.0.0.0';
 const port = 3333;
