@@ -60,8 +60,7 @@ export default class EditTodoForm extends PureComponent {
         </label>
         <button type='submit' className='EditTodoForm__submitButton'>
           <span role='img' aria-label=''>
-            💾
-            {' '}
+            {'💾 '}
           </span>
           Save
         </button>

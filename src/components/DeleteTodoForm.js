@@ -23,8 +23,7 @@ const DeleteTodoForm = ({ todo, deleteTodo }) => (
     <input type='hidden' name='id' value={todo.id} />
     <button type='submit' className='DeleteTodoForm__submitButton'>
       <span role='img' aria-label=''>
-        ❌
-        {' '}
+        {'❌ '}
       </span>
       Delete
     </button>
