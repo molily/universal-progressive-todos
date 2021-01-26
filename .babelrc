@@ -8,7 +8,16 @@
     ],
     "@babel/preset-react"
   ],
-  "plugins": [["@babel/plugin-transform-react-jsx", { "pragma": "h" }]],
+  "plugins": [
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "pragma": "h",
+        "pragmaFrag": "Fragment"
+      }
+    ]
+  ],
+
   "env": {
     "production": {
       "plugins": [
