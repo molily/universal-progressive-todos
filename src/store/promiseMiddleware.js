@@ -4,7 +4,7 @@
 
 const isPromise = (obj) => obj && typeof obj.then === 'function';
 
-export default () => (next) => (action) => {
+const promiseMiddleware = () => (next) => (action) => {
   const { type, payload } = action;
 
   if (!isPromise(payload)) {
@@ -24,9 +24,10 @@ export default () => (next) => (action) => {
     })
     .catch((error) => {
       next({ type: FAILURE, error: true, payload: error });
-      /* eslint-disable no-console */
+      // eslint-disable-next-line no-console
       console.error(error);
-      /* eslint-enable no-console */
       return false;
     });
 };
+
+export default promiseMiddleware;
