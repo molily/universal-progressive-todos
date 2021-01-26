@@ -1,14 +1,20 @@
 import { connect } from 'react-redux';
+
+import {
+  createTodo,
+  deleteTodo,
+  getTodos,
+  updateTodo,
+} from '../actions/todosActions';
 import AllTodos from '../components/AllTodos';
-import * as todosActions from '../actions/todosActions';
 
 const AllTodosContainer = connect(
   // mapStateToProps
   (state) => state,
   // mapDispatchToProps
-  todosActions,
+  { createTodo, updateTodo, deleteTodo },
 )(AllTodos);
 
-AllTodosContainer.needs = [todosActions.getTodos];
+AllTodosContainer.needs = [getTodos];
 
 export default AllTodosContainer;

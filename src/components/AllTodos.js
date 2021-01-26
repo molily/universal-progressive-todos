@@ -5,9 +5,8 @@ import todosPropType from './todosPropType';
 import TodoList from './TodoList';
 import CreateTodoForm from './CreateTodoForm';
 
-const AllTodos = ({
-  todos, updateTodo, deleteTodo, createTodo,
-}) => (
+// eslint-disable-next-line object-curly-newline
+const AllTodos = ({ todos, createTodo, updateTodo, deleteTodo }) => (
   <main>
     <TodoList todos={todos} updateTodo={updateTodo} deleteTodo={deleteTodo} />
     <CreateTodoForm createTodo={createTodo} />

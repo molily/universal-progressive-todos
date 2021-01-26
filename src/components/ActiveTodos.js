@@ -5,9 +5,8 @@ import todosPropType from './todosPropType';
 import TodoList from './TodoList';
 import CreateTodoForm from './CreateTodoForm';
 
-const ActiveTodos = ({
-  todos, updateTodo, deleteTodo, createTodo,
-}) => (
+// eslint-disable-next-line object-curly-newline
+const ActiveTodos = ({ todos, createTodo, updateTodo, deleteTodo }) => (
   <main>
     <TodoList
       todos={todos.filter((todo) => !todo.completed)}
@@ -20,9 +19,9 @@ const ActiveTodos = ({
 
 ActiveTodos.propTypes = {
   todos: todosPropType.isRequired,
+  createTodo: PropTypes.func.isRequired,
   updateTodo: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired,
-  createTodo: PropTypes.func.isRequired,
 };
 
 export default ActiveTodos;
