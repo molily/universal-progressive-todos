@@ -2,7 +2,7 @@
 
 This example app renders HTML on the server and on the client using “universal” JavaScript. It uses Node.js, [Preact](https://preactjs.com/), [React-Router](https://github.com/rackt/react-router) and [Redux](https://github.com/rackt/redux) for the rendering and the UI logic. For storing the todos on the server, it uses the key-value database [LevelDB](http://leveldb.org/).
 
-_There’s also a [React version available in the master branch](https://github.com/molily/universal-progressive-todos) if you prefer that over Preact._
+_There’s also a [React version available in the main branch](https://github.com/molily/universal-progressive-todos) if you prefer that over Preact._
 
 There are several good example apps and boilerplates for universal React/Preact apps. This one borrows ideas from Milo Mordaunt’s great tutorial: [Handcrafting an Isomorphic Redux Application (With Love)](https://medium.com/front-end-developers/handcrafting-an-isomorphic-redux-application-with-love-40ada4468af4) and the [corresponding repository](https://github.com/bananaoomarang/isomorphic-redux).
 
